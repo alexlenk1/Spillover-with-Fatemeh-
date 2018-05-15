@@ -1,8 +1,10 @@
 **TABLE 7: MAIN REGRESSIONS*****
 
 clear all
+
 **cd "$repository/data_sets/generated"
 cd "C:\Users\fatemeh\Documents\GitHub\Spillover\data_sets\generated"
+use table56_unique_data_clean
 
 
 ***********************************************************************************
