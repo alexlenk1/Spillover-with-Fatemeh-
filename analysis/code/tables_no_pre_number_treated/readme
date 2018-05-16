@@ -1,10 +1,14 @@
 For this sub-analysis, the anaytical sample is the sample of:
-TREATED KIDS
-Here, we DO NOT include the pre-assessment scores and we include "proportion of treated neighbors" as explanatory variable.
+CONTROL KIDS
+Here, we DO NOT include the pre-assessment scores and we include "number of treated neighbors" as explanatory variable controlling for total number of neighbors.
 
 Here is a brief description of the tables:
 
 create_main_table7: main regression table with child fixed effects
+
+create_table34: table 3 contains the average cog and non cog scores at each assessment period, table 4 contains summary statistics on observables such as education or age
+
+create_table56: table 5 contains the average number of treated and control neighbors at each assessment, table 6 contains the proprtion of treated neighbors at each assessment
 
 table10spillover_girlgirl: contains anaysis of the spillover effect of female neighbors on female origin kids
 
@@ -16,9 +20,19 @@ table12spillover_hisphisp: contains anaysis of the spillover effect of Hispanic 
 
 table13spillover_blackblack: contains anaysis of the spillover effect of Black neighbors on Black origin kids
 
+table1415: table 14 contains summary statistics on number of control and treated neighbors by rings, table 15 contains the fadeout regressions
+
 table16_mechanism: compares spillover effect of prek-k treated nieghbors vs. parent academy treated neighbors
+
+table1718_friend_network: contains analysis of the friends network
 
 table8spillover_gender: contains analysis of spillover effect within the subsample of males and within the subsample of females
 
 table9spillover_boyboy: contains anaysis of the spillover effect of male neighbors on male origin kids
+
+tables_appendix: contains the analysis of spillover effect by separate sub-scores rather than aggregated cog and non-cog
+
+tables_newversion: uses an alternative definition of noncog = average of ospan, spatial, psra if all subscores available; if at least one missing, ncog is undefined
+
+
 
