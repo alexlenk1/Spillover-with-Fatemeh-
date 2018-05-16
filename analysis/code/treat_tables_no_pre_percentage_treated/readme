@@ -1,1 +1,24 @@
-.
+For this sub-analysis, the anaytical sample is the sample of:
+TREATED KIDS
+Here, we DO NOT include the pre-assessment scores and we include "proportion of treated neighbors" as explanatory variable controlling for total number of neighbors.
+
+Here is a brief description of the tables:
+
+create_main_table7: main regression table with child fixed effects
+
+table10spillover_girlgirl: contains anaysis of the spillover effect of female neighbors on female origin kids
+
+table11a: contains analysis of spillover effect of neighbors of own race vs. neighbors of different race from one's own
+
+table11spillover_race: contains analysis of spillover effect within the subsample of Blacks and within the subsample of Hispanics
+
+table12spillover_hisphisp: contains anaysis of the spillover effect of Hispanic neighbors on Hispanic origin kids
+
+table13spillover_blackblack: contains anaysis of the spillover effect of Black neighbors on Black origin kids
+
+table16_mechanism: compares spillover effect of prek-k treated nieghbors vs. parent academy treated neighbors
+
+table8spillover_gender: contains analysis of spillover effect within the subsample of males and within the subsample of females
+
+table9spillover_boyboy: contains anaysis of the spillover effect of male neighbors on male origin kids
+
