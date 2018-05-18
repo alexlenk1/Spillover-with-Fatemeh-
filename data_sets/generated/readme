@@ -1,1 +1,14 @@
-Generated Data Sets
+Generated Data Sets will be saved here. Here is a brief descirption of the main data sets:
+
+table34_unique_data_clean = this is the output of dofile "creating_panel", it creates the data set in panel format, 
+                            it contains all scores as well as observables, you can use it
+                            to create tables 3 and 4
+
+table56_unique_data_clean = this is the output of dofile "merge_unique_data_neighbors", it contains all data from "table34" and 
+                            merges them on the number of neighbors, you can use it to create tables 5 and 6, the main regressions
+                            of table 7 and also regressions by race and gender
+                          
+The datasets below are outputs of the dofile "neighbors_gender_race_merged". 
+They calculate the number of specific types of neighbor by CHECC ID: missing race neighbors, white, hispanic, black, female, male
+They are used to create the remaining tables: spillover of Black on Black, of Hispanic on Hispanic, of Male on Male, 
+of Female on Female, of Neighbors of Same Race, of Neighbors of Other Race
