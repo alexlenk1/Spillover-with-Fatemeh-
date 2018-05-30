@@ -546,6 +546,8 @@ order child year test
 
 drop if (test == "aoy5" | test == "aoy6" | test == ".")
 
+tostring year, replace
+
 cd "$repository/data_sets/generated"
 
 save neighbor_class_multiple_years, replace
