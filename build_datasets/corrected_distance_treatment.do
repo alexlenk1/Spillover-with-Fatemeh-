@@ -7,7 +7,7 @@ cd "$repository/data_sets/pre_made"
 use distance_treatment
 
 *Kid 1204 now with id 1355
-replace origin_gecc_id = 1355 if origin_gecc_id == 1204 & randomization_ori == "2010"
+replace origin_gecc_id = 1355 if origin_gecc_id == 1204 
 replace destination_gecc_id = 1355 if destination_gecc_id == 1204
 
 *Kids 2145 and 2608 same kid but recorded as randomized in two different treatment in the same year - Drop!
@@ -18,7 +18,7 @@ drop if origin_gecc_id == 2608
 drop if destination_gecc_id == 2608
 
 *Kid 2468 now with id 2674
-replace origin_gecc_id = 2674 if origin_gecc_id == 2468 & randomization_ori == "2011"
+replace origin_gecc_id = 2674 if origin_gecc_id == 2468 
 replace destination_gecc_id = 2674 if destination_gecc_id == 2468
 
 *Kid 3764 is the second randomization of kid 2764

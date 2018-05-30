@@ -2776,4 +2776,279 @@ gen `period'_mc_`treat' = mc_`period'*`period'_`treat'
 }
 
 
+********************************
+**Number of times in treatment**
+********************************
+
+
+**This creates the number of times a  neighbor has been randomized into treatment at a particular assessment of the origin kid
+
+*Creating dummies to identify the first year of being randomized in a treatment
+
+gen first_treat2010 = (treatment2010 != "control" & treatment2010 != "")
+
+foreach year in 2011 2012 2013 {
+
+local pr_year = `year' - 1
+gen first_treat`year' = ((treatment`pr_year' == "control" | treatment`pr_year' == "") & (treatment`year' != "control" & treatment`year' != "")) 
+
+
+} 
+
+*Creating dummies to identify the second year of being randomized in a treatment
+foreach year in 2011 2012 2013 {
+
+local pr_year = `year' - 1
+gen second_treat`year' = (first_treat`pr_year' == 1 & (treatment`year' != "control" & treatment`year' != "")) 
+
+
+} 
+
+*Initiating varibles to identify the number of times being randomized into treatment according to calendar years
+foreach year in 2009 2010 2011 2012 2013 2014 2015 2016 2017 2018 2019 {
+
+gen treat`year' = 0
+
+}
+
+
+*treat2010 = Aug2010 until Aug2011
+*treat2011 = Sep2011 until Aug2012
+*treat2012 = Sep2012 until Aug2013
+*treat2013 = Sep2013 until Aug2014
+*etc...
+
+
+*Replacing the "treat" variable with the correct values"
+
+foreach year in 2010 2011 2012 2013 {
+
+if `year' == 2010 {
+
+local year1 = `year' + 1
+local year2 = `year' + 2
+local year3 = `year' + 3
+
+replace treat`year' =  1 if first_treat`year' == 1
+replace treat`year1' = 1 if first_treat`year' == 1 & second_treat`year1' == 0
+replace treat`year2' = 1 if first_treat`year' == 1 & second_treat`year1' == 0
+replace treat`year3' = 1 if first_treat`year' == 1 & second_treat`year1' == 0
+
+}
+
+if `year' == 2011 {
+
+local year1 = `year' + 1
+local year2 = `year' + 2
+
+
+replace treat`year' =  1 if first_treat`year' == 1
+replace treat`year1' = 1 if first_treat`year' == 1 & second_treat`year1' == 0
+replace treat`year2' = 1 if first_treat`year' == 1 & second_treat`year1' == 0
+
+}
+
+if `year' == 2012 {
+
+local year1 = `year' + 1
+
+replace treat`year' =  1 if first_treat`year' == 1
+replace treat`year1' = 1 if first_treat`year' == 1 & second_treat`year1' == 0
+
+}
+
+if `year' == 2013 {
+
+replace treat`year' =  1 if first_treat`year' == 1
+
+}
+
+
+ 
+}
+
+
+foreach year in 2010 2011 2012 2013 {
+
+if `year' == 2010 {
+
+local year1 = `year' + 1
+local year2 = `year' + 2
+local year3 = `year' + 3
+
+replace treat`year1' = 2 if first_treat`year' == 1 & second_treat`year1' == 1
+replace treat`year2' = 2 if first_treat`year' == 1 & second_treat`year1' == 1
+replace treat`year3' = 2 if first_treat`year' == 1 & second_treat`year1' == 1
+
+}
+
+if `year' == 2011 {
+
+local year1 = `year' + 1
+local year2 = `year' + 2
+
+replace treat`year1' = 2 if first_treat`year' == 1 & second_treat`year1' == 1
+replace treat`year2' = 2 if first_treat`year' == 1 & second_treat`year1' == 1
+
+}
+
+if `year' == 2012 {
+
+local year1 = `year' + 1
+
+replace treat`year1' = 2 if first_treat`year' == 1 & second_treat`year1' == 1
+
+}
+
+ 
+}
+
+
+*
+
+
+*After 2014, the "treat" variables are the same as "treat2013" as no new randomisations were conducted after 2013 
+foreach year in 2010 2011 2012 2013 {
+
+if `year' == 2010 {
+
+
+local year3 = `year' + 3
+local year4 = `year' + 4
+local year5 = `year' + 5
+local year6 = `year' + 6
+local year7 = `year' + 7
+local year8 = `year' + 8
+local year9 = `year' + 9
+
+replace treat`year4' = treat`year3'
+replace treat`year5' = treat`year3'
+replace treat`year6' = treat`year3'
+replace treat`year7' = treat`year3'
+replace treat`year8' = treat`year3'
+replace treat`year9' = treat`year3'
+
+}
+
+if `year' == 2011 {
+
+local year2 = `year' + 2
+local year3 = `year' + 3
+local year4 = `year' + 4
+local year5 = `year' + 5
+local year6 = `year' + 6
+local year7 = `year' + 7
+local year8 = `year' + 8
+
+replace treat`year3' =  treat`year2'
+replace treat`year4' =  treat`year2'
+replace treat`year5' =  treat`year2'
+replace treat`year6' =  treat`year2'
+replace treat`year7' =  treat`year2'
+replace treat`year8' =  treat`year2'
+
+}
+
+if `year' == 2012 {
+
+local year1 = `year' + 1
+local year2 = `year' + 2
+local year3 = `year' + 3
+local year4 = `year' + 4
+local year5 = `year' + 5
+local year6 = `year' + 6
+local year7 = `year' + 7
+
+
+replace treat`year2' = treat`year1'
+replace treat`year3' = treat`year1'
+replace treat`year4' = treat`year1'
+replace treat`year5' = treat`year1'
+replace treat`year6' = treat`year1'
+replace treat`year7' = treat`year1'
+
+}
+
+
+if `year' == 2013 {
+
+local year1 = `year' + 1
+local year2 = `year' + 2
+local year3 = `year' + 3
+local year4 = `year' + 4
+local year5 = `year' + 5
+local year6 = `year' + 6
+
+replace treat`year1' = treat`year'
+replace treat`year2' = treat`year'
+replace treat`year3' = treat`year'
+replace treat`year4' = treat`year'
+replace treat`year5' = treat`year'
+replace treat`year6' = treat`year'
+
+
+}
+
+}
+
+*Now defining the variable "numbero of 
+foreach period in pre mid post sl aoy1 aoy2 aoy3 aoy4 aoy5 aoy6 {
+
+gen `period'_num_in_treat = 0
+
+}
+
+
+gen once_in_kinderprep = (treatment2012 == "kinderprep" | treatment2013 == "kinderprep")
+
+
+*Baseline case: neither an origin kid nor a destination kid are kinderpreps
+foreach year in 2010 2011 2012 2013 {
+
+local year0 = `year' - 1
+local year1 = `year' + 1
+local year2 = `year' + 2
+local year3 = `year' + 3
+local year4 = `year' + 4
+local year5 = `year' + 5
+local year6 = `year' + 6
+
+replace pre_num_in_treat = treat`year0' if randomization_ori == `year' 
+replace mid_num_in_treat = treat`year' if randomization_ori == `year' 
+replace post_num_in_treat = treat`year' if randomization_ori == `year' 
+replace sl_num_in_treat = treat`year' if randomization_ori == `year' 
+replace aoy1_num_in_treat = treat`year1' if randomization_ori == `year' 
+replace aoy2_num_in_treat = treat`year2' if randomization_ori == `year' 
+replace aoy3_num_in_treat = treat`year3' if randomization_ori == `year' 
+replace aoy4_num_in_treat = treat`year4' if randomization_ori == `year' 
+replace aoy5_num_in_treat = treat`year5' if randomization_ori == `year' 
+replace aoy6_num_in_treat = treat`year6' if randomization_ori == `year' 
+
+}
+
+*The case when an origin kid is not in kinder but a destination kid has been randomized once in kinderprep
+replace aoy2_num_in_treat = 0 if randomization_ori == 2010 & treatment2012 == "kinderprep" & kinderprep_ori != 1
+replace aoy3_num_in_treat = 0 if randomization_ori == 2010 & treatment2013 == "kinderprep" & kinderprep_ori != 1
+
+replace aoy1_num_in_treat = 0 if randomization_ori == 2011 & treatment2012 == "kinderprep" & kinderprep_ori != 1
+replace aoy2_num_in_treat = 0 if randomization_ori == 2011 & treatment2013 == "kinderprep" & kinderprep_ori != 1
+
+replace mid_num_in_treat = 0 if randomization_ori == 2012 & treatment2012 == "kinderprep" & kinderprep_ori != 1
+replace post_num_in_treat = 0 if randomization_ori == 2012 & treatment2012 == "kinderprep" & kinderprep_ori != 1
+replace aoy1_num_in_treat = 0 if randomization_ori == 2012 & treatment2013 == "kinderprep" & kinderprep_ori != 1
+ 
+replace pre_num_in_treat = 0 if randomization_ori == 2013 & treatment2012 == "kinderprep" & kinderprep_ori != 1
+replace mid_num_in_treat = 0 if randomization_ori == 2013 & treatment2013 == "kinderprep" & kinderprep_ori != 1
+replace post_num_in_treat = 0 if randomization_ori == 2013 & treatment2013 == "kinderprep" & kinderprep_ori != 1
+
+*Adjustments needed for the case an origin kid is kinderprep and the destination kid is not kinderprep, only for the pre assessment which occurs in the summer following the year of randomization
+foreach year in 2012 2013 {
+
+replace pre_num_in_treat = treat`year' if randomization_ori == `year' & kinderprep_ori == 1 & once_in_kinderprep == 0
+}
+
+*Adjustments if both kids are kinderpreps 
+replace aoy1_num_in_treat = 0 if randomization_ori == 2012 & kinderprep_ori == 1 & treatment2013 == "kinderprep"
+
+
 save multiple_year_neighbor_number_score.dta, replace 

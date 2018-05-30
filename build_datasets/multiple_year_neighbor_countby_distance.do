@@ -9,7 +9,7 @@ cd "$repository/data_sets/generated"
 use multiple_year_neighbor_number_score
 
 *set radii
-local distance " 500 1000 2000 3000 4000 5000 6000 7000 8000 9000 10000 15000 20000" 
+local distance " 500 1000 2000 3000 4000 5000 6000 7000 8000 9000 10000 15000 20000"
 
 foreach d of local distance {
 
@@ -122,7 +122,8 @@ foreach d of local distance {
 	 pre_mc_pka mid_mc_pka post_mc_pka sl_mc_pka aoy1_mc_pka aoy2_mc_pka aoy3_mc_pka aoy4_mc_pka aoy5_mc_pka ///
 	 pre_mc_pkb mid_mc_pkb post_mc_pkb sl_mc_pkb aoy1_mc_pkb aoy2_mc_pkb aoy3_mc_pkb aoy4_mc_pkb aoy5_mc_pkb ///
 	 pre_mc_preschool mid_mc_preschool post_mc_preschool sl_mc_preschool aoy1_mc_preschool aoy2_mc_preschool aoy3_mc_preschool aoy4_mc_preschool aoy5_mc_preschool ///
-	 pre_mc_treated mid_mc_treated post_mc_treated sl_mc_treated aoy1_mc_treated aoy2_mc_treated aoy3_mc_treated aoy4_mc_treated aoy5_mc_treated,  by (origin_gecc_id randomization_ori) 
+	 pre_mc_treated mid_mc_treated post_mc_treated sl_mc_treated aoy1_mc_treated aoy2_mc_treated aoy3_mc_treated aoy4_mc_treated aoy5_mc_treated ///
+	 pre_num_in_treat mid_num_in_treat post_num_in_treat sl_num_in_treat aoy1_num_in_treat aoy2_num_in_treat aoy3_num_in_treat aoy4_num_in_treat aoy5_num_in_treat,  by (origin_gecc_id randomization_ori) 
 
 
 
@@ -140,7 +141,7 @@ foreach d of local distance {
 			mis@_v1std_ncog_cash mis@_v1std_ncog_cogx mis@_v1std_ncog_college mis@_v1std_ncog_control mis@_v1std_ncog_kinderprep mis@_v1std_ncog_pka mis@_v1std_ncog_pkb mis@_v1std_ncog_preschool mis@_v1std_ncog_treated ///
 			mis@_v2std_ncog_cash mis@_v2std_ncog_cogx mis@_v2std_ncog_college mis@_v2std_ncog_control mis@_v2std_ncog_kinderprep mis@_v2std_ncog_pka mis@_v2std_ncog_pkb mis@_v2std_ncog_preschool mis@_v2std_ncog_treated ///
 			@_mt_cash @_mt_cogx @_mt_college @_mt_control @_mt_kinderprep @_mt_pka @_mt_pkb @_mt_preschool @_mt_treated ///
-			@_mc_cash @_mc_cogx @_mc_college @_mc_control @_mc_kinderprep @_mc_pka @_mc_pkb @_mc_preschool @_mc_treated, i(origin_gecc_id randomization_ori) j(test) s
+			@_mc_cash @_mc_cogx @_mc_college @_mc_control @_mc_kinderprep @_mc_pka @_mc_pkb @_mc_preschool @_mc_treated @_num_in_treat, i(origin_gecc_id randomization_ori) j(test) s
 			
 	rename _* *
 
@@ -152,6 +153,12 @@ foreach d of local distance {
 	gen `version'`score'_treat = `version'std_`score'_treated / (treated - mis_`version'std_`score'_treated)
 	*av_score_notkindertreated is the average score of all treated neighbors for whom we have a score except for kinderprep
 	gen `version'`score'_nktreat = (`version'std_`score'_treated - `version'std_`score'_kinderprep)/ (treated - kinderprep - mis_`version'std_`score'_treated + mis_`version'std_`score'_kinderprep)
+	*broken down by type of treatment
+	foreach treat in cash cogx college kinderprep pka pkb preschool {
+	gen `version'`score'_`treat' =  `version'std_`score'_`treat' / (`treat' - mis_`version'std_`score'_`treat')
+	}
+
+	
 	
 
 	}
@@ -161,21 +168,46 @@ foreach d of local distance {
 	*control neighbors, treated neighbors, and treated without kinderprep
 	gen month_incontr_contr = mc_control/control
 	gen month_incontr_treat = mc_treated/treated
-	gen month_incontr_nktreat = (mc_treated - mc_kinderprep)/ (treated - kinderprep)
+	gen month_incontr_nktreat = (mc_treated - mc_kinderprep)/ (treated - kinderprep)		
+	*broken down by type of treatment
+	foreach treat in cash cogx college kinderprep pka pkb preschool {
+	gen month_incontr_`treat' =  mc_`treat'/`treat'
+	}
 	*av_month_intreat is the average number months certain types of neighbors have spent in treatment : this is defined for
 	*control neighbors, treated neighbors, and treated without kinderprep
 	gen month_intreat_treat = mt_treated/treated
 	gen month_intreat_nktreat = (mt_treated - mt_kinderprep)/ (treated - kinderprep)
 	gen month_intreat_contr = mt_control/control
+	*broken down by type of treatment
+	foreach treat in cash cogx college kinderprep pka pkb preschool {
+	gen month_intreat_`treat' =  mt_`treat'/`treat'
+	}
 	
 	
 
 	keep origin_gecc_id randomization_ori test cash cogx college control kinderprep pka pkb preschool treated ///
 	v1cog_contr v1cog_treat v1cog_nktreat v1ncog_contr v1ncog_treat v1ncog_nktreat v2cog_contr v2cog_treat v2cog_nktreat v2ncog_contr v2ncog_treat v2ncog_nktreat /// 
-	month_incontr_contr month_incontr_treat month_incontr_nktreat month_intreat_treat month_intreat_nktreat month_intreat_contr
+	v1cog_cash v1ncog_cash v2cog_cash v2ncog_cash ///
+	v1cog_cogx v1ncog_cogx v2cog_cogx v2ncog_cogx ///
+	v1cog_college v1ncog_college v2cog_college v2ncog_college ///
+	v1cog_kinderprep v1ncog_kinderprep v2cog_kinderprep v2ncog_kinderprep ///
+	v1cog_pka v1ncog_pka v2cog_pka v2ncog_pka ///
+	v1cog_pkb v1ncog_pkb v2cog_pkb v2ncog_pkb ///
+	v1cog_preschool v1ncog_preschool v2cog_preschool v2ncog_preschool ///
+	month_incontr_contr month_incontr_treat month_incontr_nktreat month_intreat_treat month_intreat_nktreat month_intreat_contr ///
+	month_incontr_cash month_incontr_college month_incontr_cogx month_incontr_kinderprep month_incontr_preschool month_incontr_pka  month_incontr_pkb ///
+	month_intreat_cash month_intreat_college month_intreat_cogx month_intreat_kinderprep month_intreat_preschool month_intreat_pka  month_intreat_pkb num_in_treat
 	
 
-	foreach var in cash cogx college control kinderprep pka pkb preschool treated v1cog_contr v1cog_treat v1cog_nktreat v1ncog_contr v1ncog_treat v1ncog_nktreat v2cog_contr v2cog_treat v2cog_nktreat v2ncog_treat v2ncog_nktreat month_incontr_contr month_incontr_treat month_incontr_nktreat month_intreat_treat month_intreat_contr month_intreat_nktreat {
+	foreach var in cash cogx college control kinderprep pka pkb preschool treated v1cog_contr v1cog_treat v1cog_nktreat v1ncog_contr v1ncog_treat v1ncog_nktreat v2cog_contr v2cog_treat v2cog_nktreat v2ncog_contr v2ncog_treat v2ncog_nktreat /// 
+	month_incontr_contr month_incontr_treat month_incontr_nktreat month_intreat_treat month_intreat_contr month_intreat_nktreat  ///
+	v1cog_cash v1ncog_cash v2cog_cash v2ncog_cash v1cog_cogx v1ncog_cogx v2cog_cogx v2ncog_cogx v1cog_college v1ncog_college v2cog_college v2ncog_college  ///
+	v1cog_kinderprep v1ncog_kinderprep v2cog_kinderprep v2ncog_kinderprep  ///
+	v1cog_pka v1ncog_pka v2cog_pka v2ncog_pka  ///
+	v1cog_pkb v1ncog_pkb v2cog_pkb v2ncog_pkb ////
+	v1cog_preschool v1ncog_preschool v2cog_preschool v2ncog_preschool ///
+	month_incontr_cash month_incontr_college month_incontr_cogx month_incontr_kinderprep month_incontr_preschool month_incontr_pka  month_incontr_pkb ///
+	month_intreat_cash month_intreat_college month_intreat_cogx month_intreat_kinderprep month_intreat_preschool month_intreat_pka  month_intreat_pkb num_in_treat {
 		rename `var' `var'_`d'
 	}
 	
