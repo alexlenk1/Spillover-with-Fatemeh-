@@ -5,7 +5,7 @@ clear all
 
 cd "$repository/data_sets/generated"
 
-use neighbor_count_by_oriassessments_dummies_Fatemeh_all_years
+use multiple_year_neighbor_number_score
 
 *Identifying race and gender for destination kids
 rename destination_gecc_id child
@@ -229,7 +229,7 @@ local distance "500 1000 2000 3000 4000 5000 6000 7000 8000 9000 10000 15000 200
 	v1cog_preschool v1ncog_preschool v2cog_preschool v2ncog_preschool ///
 	month_incontr_cash month_incontr_college month_incontr_cogx month_incontr_kinderprep month_incontr_preschool month_incontr_pka  month_incontr_pkb ///
 	month_intreat_cash month_intreat_college month_intreat_cogx month_intreat_kinderprep month_intreat_preschool month_intreat_pka  month_intreat_pkb num_in_treat {
-		rename `var' `var'_`d'_male
+		rename `var' `var'_`d'_m
 	}
 		
 		save neighbors_male_circle_`d', replace
@@ -489,7 +489,7 @@ local distance "500 1000 2000 3000 4000 5000 6000 7000 8000 9000 10000 15000 200
 	v1cog_preschool v1ncog_preschool v2cog_preschool v2ncog_preschool ///
 	month_incontr_cash month_incontr_college month_incontr_cogx month_incontr_kinderprep month_incontr_preschool month_incontr_pka  month_incontr_pkb ///
 	month_intreat_cash month_intreat_college month_intreat_cogx month_intreat_kinderprep month_intreat_preschool month_intreat_pka  month_intreat_pkb num_in_treat {
-		rename `var' `var'_`d'_female
+		rename `var' `var'_`d'_f
 	}
 		
 		save neighbors_female_circle_`d', replace
@@ -698,7 +698,7 @@ local distance "500 1000 2000 3000 4000 5000 6000 7000 8000 9000 10000 15000 200
 	v1cog_preschool v1ncog_preschool v2cog_preschool v2ncog_preschool ///
 	month_incontr_cash month_incontr_college month_incontr_cogx month_incontr_kinderprep month_incontr_preschool month_incontr_pka  month_incontr_pkb ///
 	month_intreat_cash month_intreat_college month_intreat_cogx month_intreat_kinderprep month_intreat_preschool month_intreat_pka  month_intreat_pkb num_in_treat {
-		rename `var' `var'_`d'_black
+		rename `var' `var'_`d'_b
 	}
 		
 		save neighbors_black_circle_`d', replace
@@ -907,7 +907,7 @@ local distance "500 1000 2000 3000 4000 5000 6000 7000 8000 9000 10000 15000 200
 	v1cog_preschool v1ncog_preschool v2cog_preschool v2ncog_preschool ///
 	month_incontr_cash month_incontr_college month_incontr_cogx month_incontr_kinderprep month_incontr_preschool month_incontr_pka  month_incontr_pkb ///
 	month_intreat_cash month_intreat_college month_intreat_cogx month_intreat_kinderprep month_intreat_preschool month_intreat_pka  month_intreat_pkb num_in_treat {
-		rename `var' `var'_`d'_hispanic
+		rename `var' `var'_`d'_h
 	}
 		
 		save neighbors_hispanic_circle_`d', replace
@@ -1116,7 +1116,7 @@ local distance "500 1000 2000 3000 4000 5000 6000 7000 8000 9000 10000 15000 200
 	v1cog_preschool v1ncog_preschool v2cog_preschool v2ncog_preschool ///
 	month_incontr_cash month_incontr_college month_incontr_cogx month_incontr_kinderprep month_incontr_preschool month_incontr_pka  month_incontr_pkb ///
 	month_intreat_cash month_intreat_college month_intreat_cogx month_intreat_kinderprep month_intreat_preschool month_intreat_pka  month_intreat_pkb num_in_treat {
-		rename `var' `var'_`d'_other_race
+		rename `var' `var'_`d'_o
 	}
 		
 		save neighbors_other_race_circle_`d', replace
@@ -1337,7 +1337,7 @@ local distance "500 1000 2000 3000 4000 5000 6000 7000 8000 9000 10000 15000 200
 	v1cog_preschool v1ncog_preschool v2cog_preschool v2ncog_preschool ///
 	month_incontr_cash month_incontr_college month_incontr_cogx month_incontr_kinderprep month_incontr_preschool month_incontr_pka  month_incontr_pkb ///
 	month_intreat_cash month_intreat_college month_intreat_cogx month_intreat_kinderprep month_intreat_preschool month_intreat_pka  month_intreat_pkb num_in_treat {
-		rename `var' `var'_`d'_missing_race
+		rename `var' `var'_`d'_n
 	}
 		
 		save neighbors_missing_race_circle_`d', replace
@@ -1547,7 +1547,7 @@ local distance "500 1000 2000 3000 4000 5000 6000 7000 8000 9000 10000 15000 200
 	v1cog_preschool v1ncog_preschool v2cog_preschool v2ncog_preschool ///
 	month_incontr_cash month_incontr_college month_incontr_cogx month_incontr_kinderprep month_incontr_preschool month_incontr_pka  month_incontr_pkb ///
 	month_intreat_cash month_intreat_college month_intreat_cogx month_intreat_kinderprep month_intreat_preschool month_intreat_pka  month_intreat_pkb num_in_treat {
-		rename `var' `var'_`d'_white
+		rename `var' `var'_`d'_w
 	}
 		
 		save neighbors_white_circle_`d', replace
