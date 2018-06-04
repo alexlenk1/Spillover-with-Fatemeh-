@@ -8,6 +8,13 @@ cd "$repository/data_sets/generated"
 
 use table56_unique_data_clean
 
+*Dropping those kids for whom we lack addresses
+foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
+
+drop if child == `kid'
+}
+
+
 
 ***********************************************************************************
 **If want to reproduce table restricting sample to control kids, add the code below
@@ -55,18 +62,25 @@ file open file5 using "$repository/analysis/tables/tables_pre_percentage_treated
 file write file5 "\documentclass[11pt]{article}"
 file write file5 _n "\usepackage{booktabs, multicol, multirow}"
 file write file5 _n "\usepackage{caption}"
-file write file5 _n "\userpackage[flushleft]{threeparttable}"
+file write file5 _n "\usepackage{adjustbox}"
+file write file5 _n "\usepackage{subcaption}"
+file write file5 _n "\usepackage{caption}"
+file write file5 _n "\usepackage[flushleft]{threeparttable}"
 file write file5 _n	"\begin{document}"
 
-file write file5 _n "\begin{table}[H]\centering \caption{\small Spillover Effects by Gender  }  \scalebox{1}{\label{tab:results_gender} \begin{threeparttable}" 
+file write file5 _n "\begin{table}[h]\centering \caption{\small Spillover Effects by Gender  }" 
+file write file5 _n "\begin{tabular}{cc}"
+file write file5 _n "\begin{minipage}{.5\linewidth}"
+file write file5 _n "\centering"
+file write file5 _n "\begin{adjustbox}{width = \textwidth}"
 file write file5 _n "\begin{tabular}{lc|c}"
 file write file5 _n "\toprule"
 file write file5 _n "\midrule"
-file write file5 _n "& \multicolumn{1}{c}{Cognitive Scores} & \multicolumn{1}{c}{Non-cognitive Scores}\\ \cline{2-7}"
+file write file5 _n "& \multicolumn{1}{c}{Cognitive Scores} & \multicolumn{1}{c}{Non-cognitive Scores}\\"
 file write file5 _n "& Fixed Effect & Fixed Effect \\"
 file write file5 _n "$ d $ (meters) & (1) & (2) \\"
 file write file5 _n "\midrule"
-file write file5 _n "& \multicolumn{2}{c}{Control Boys}\\ \cline{2-7}"
+file write file5 _n "& \multicolumn{2}{c}{Control Boys}\\ \cline{1-3}"
 
 **Running Regressions for Boys	
 
@@ -109,7 +123,23 @@ foreach d of local distance  {
 }
 
 file write file5 _n "& \multicolumn{2}{c}{}\\"
-file write file5 _n "& \multicolumn{2}{c}{Control Girls}\\ \cline{2-7}"
+file write file5 _n "\midrule"
+file write file5 _n "\bottomrule"
+file write file5 _n "\end{adjustbox}"
+file write file5 _n "\end{minipage} &"
+
+file write file5 _n "\begin{minipage}{.5\linewidth}"
+file write file5 _n "\centering"
+file write file5 _n "\begin{adjustbox}{width = \textwidth}"
+file write file5 _n "\begin{tabular}{lc|c}"
+file write file5 _n "\toprule"
+file write file5 _n "\midrule"
+
+file write file5 _n "& \multicolumn{1}{c}{Cognitive Scores} & \multicolumn{1}{c}{Non-cognitive Scores}\\"
+file write file5 _n "& Fixed Effect & Fixed Effect \\"
+file write file5 _n "$ d $ (meters) & (1) & (2) \\"
+file write file5 _n "\midrule"
+file write file5 _n "& \multicolumn{2}{c}{Control Girls}\\ \cline{1-3}"
 
 
 ** SPILL-OVER GIRLS
@@ -161,8 +191,12 @@ foreach d of local distance  {
 	
 
 	
+file write file5 _n "& \multicolumn{2}{c}{}\\"
 file write file5 _n "\midrule"
 file write file5 _n "\bottomrule"
+file write file5 _n "\end{tabular}"
+file write file5 _n "\end{adjustbox}"
+file write file5 _n "\end{minipage}"
 file write file5 _n "\end{tabular}"
 file write file5 _n "\begin{tablenotes}"
 file write file5 _n "\footnotesize"

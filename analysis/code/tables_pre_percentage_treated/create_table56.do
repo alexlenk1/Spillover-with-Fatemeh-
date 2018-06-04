@@ -9,6 +9,12 @@ cd "$repository/data_sets/generated"
 
 use table56_unique_data_clean
 
+*Dropping those kids for whom we lack addresses
+foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
+
+drop if child == `kid'
+}
+
 
 ***********************************************************************************
 **If want to reproduce table restricting sample to control kids, add the code below
@@ -24,16 +30,18 @@ file open file2 using "$repository/analysis/tables/tables_pre_percentage_treated
 
 
 file write file2 "\documentclass[11pt]{article}"
+file write file2 _n "\usepackage[a4paper,margin=1in,landscape]{geometry}"
 file write file2 _n "\usepackage{booktabs, multicol, multirow}"
 file write file2 _n "\usepackage{caption}"
-file write file2 _n "\userpackage[flushleft]{threeparttable}"
+file write file2 _n "\usepackage{adjustbox}"
+file write file2 _n "\usepackage[flushleft]{threeparttable}"
 file write file2 _n	"\begin{document}"
 
 file write file2 _n "\begin{table}[h]"
-file write file2 _n "\begin{threeparttable}"
 file write file2 _n "\centering"
 file write file2 _n "\caption{Number Neighbors at the Time of Each Assessment}"
 file write file2 _n "\label{tab:Nstat}"
+file write file2 _n "\begin{adjustbox}{width = \textwidth}"
 file write file2 _n "\begin{tabular}{l|cc|cc|cc|cc|cc|cc|cc|cc|cc|cc|cc|cc|cc}"
 file write file2 _n "\toprule"
 file write file2 _n "\midrule"
@@ -117,6 +125,7 @@ file write file2 _n "Obs. & `itemtotal500_3' &`itemtotal500_6' & `itemtotal1000_
 file write file2 _n "\midrule"
 file write file2 _n "\bottomrule"
 file write file2 _n "\end{tabular}"
+file write file2 _n "\end{adjustbox}"
 
 
 file write file2 _n "\begin{tablenotes}"
@@ -146,6 +155,13 @@ cd "$repository/data_sets/generated"
 
 use table56_unique_data_clean
 
+*Dropping those kids for whom we lack addresses
+foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
+
+drop if child == `kid'
+}
+
+
 ***********************************************************************************
 **If want to reproduce table restricting sample to control kids, add the code below
 
@@ -157,21 +173,22 @@ keep if (C == 1 & first_random == 1) | (CC == 1 & first_random == 1) | (CT_pretr
 
 file open file3 using "$repository/analysis/tables/tables_pre_percentage_treated/table6.tex", replace write
 
-
 file write file3 "\documentclass[11pt]{article}"
+file write file3 _n "\usepackage[a4paper,margin=1in,landscape]{geometry}"
 file write file3 _n "\usepackage{booktabs, multicol, multirow}"
 file write file3 _n "\usepackage{caption}"
-file write file3 _n "\userpackage[flushleft]{threeparttable}"
+file write file3 _n "\usepackage[flushleft]{threeparttable}"
 file write file3 _n	"\begin{document}"
+file write file3 _n	"\centering"
 
 file write file3 _n	"\begin{table}[]"
 file write file3 _n	"\begin{threeparttable}"
-file write file3 _n	"\centering"
+file write file3 _n	"\footnotesize"
+file write file3 _n	"\setlength\tabcolsep{3pt}"
 file write file3 _n	"\caption{Average Percentage of Treated Neighbors in Our Final Sample}"
 file write file3 _n	"\label{tab:p_sum_stat}"
 file write file3 _n	"\begin{tabular}{l|lllllllllllll}"
 file write file3 _n	"Assessment         & 0.5K meters & 1K meters & 2K meters & 3K meters & 4K meters  & 5K meters & 6K meters & 7K meters & 8K meters & 9K meters & 10K meters & 15K meters & 20K meters \\ \hline \hline"
-
 
 local i = 1
 local j = 1

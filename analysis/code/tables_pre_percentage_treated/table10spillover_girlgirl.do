@@ -7,6 +7,13 @@ cd "$repository/data_sets/generated"
 
 use table34_unique_data_clean
 
+*Dropping those kids for whom we lack addresses
+foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
+
+drop if child == `kid'
+}
+
+
 ***********************************************************************************
 **If want to reproduce table restricting sample to control kids, add the code below
 
@@ -27,7 +34,7 @@ drop _merge
 
 **Defining Key Explanatory Variable
 foreach distance in 500 1000 2000 3000 4000 5000 6000 7000 8000 9000 10000 15000 20000 {
-gen percent_treated_`distance' = (treated_`distance'_female / (treated_`distance'_female + control_`distance'_female))*100
+gen percent_treated_`distance' = (treated_`distance'_f / (treated_`distance'_f + control_`distance'_f))*100
 }
 
 **Merging with distance to school and block group variable
@@ -70,16 +77,17 @@ file open file7 using "$repository/analysis/tables/tables_pre_percentage_treated
 file write file7 "\documentclass[11pt]{article}"
 file write file7 _n "\usepackage{booktabs, multicol, multirow}"
 file write file7 _n "\usepackage{caption}"
-file write file7 _n "\userpackage[flushleft]{threeparttable}"
+file write file7 _n "\usepackage[flushleft]{threeparttable}"
 file write file7 _n	"\begin{document}"
 
-file write file7 _n "\begin{table}[h]\centering" 
+file write file7 _n "\begin{table}[h]\centering\small" 
 
-file write file7 _n "\caption{Spillover From Girls to  Girls} \scalebox{0.92} {\label{tab:results_girls} \begin{threeparttable}"
+file write file7 _n "\caption{Spillover From Girls to  Girls} \begin{threeparttable}"
+file write file7 _n "\renewcommand{\arraystretch}{.8}"
 file write file7 _n "\begin{tabular}{lc|c}"
 file write file7 _n "\toprule"
 file write file7 _n "\midrule"
-file write file7 _n "& \multicolumn{1}{c}{Cognitive Scores} & \multicolumn{1}{c}{Non-cognitive Scores}\\ \cline{2-7}"
+file write file7 _n "& \multicolumn{1}{c}{Cognitive Scores} & \multicolumn{1}{c}{Non-cognitive Scores}\\"
 file write file7 _n "& Fixed Effect & Fixed Effect \\"
 file write file7 _n " $ d $ (meters)& (1) & (2) \\"
 file write file7 _n "\midrule"

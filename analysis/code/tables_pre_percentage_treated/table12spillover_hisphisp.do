@@ -7,6 +7,11 @@ cd "$repository/data_sets/generated"
 
 use table34_unique_data_clean
 
+*Dropping those kids for whom we lack addresses
+foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
+
+drop if child == `kid'
+}
 
 ***********************************************************************************
 **If want to reproduce table restricting sample to control kids, add the code below
@@ -38,7 +43,7 @@ drop _merge
 
 **Defining Key Explanatory Variable
 foreach distance in 500 1000 2000 3000 4000 5000 6000 7000 8000 9000 10000 15000 20000 {
-gen percent_treated_`distance' = (treated_`distance'_hispanic / (treated_`distance'_hispanic + control_`distance'_hispanic))*100
+gen percent_treated_`distance' = (treated_`distance'_h / (treated_`distance'_h + control_`distance'_h))*100
 }
 
 **Merging with distance to school and block group variable
@@ -77,22 +82,27 @@ local i = 1
 file open file9 using "$repository/analysis/tables/tables_pre_percentage_treated/table12spillover_hispanichispanic.tex", replace write
 
 
+
 file write file9 "\documentclass[11pt]{article}"
 file write file9 _n "\usepackage{booktabs, multicol, multirow}"
 file write file9 _n "\usepackage{caption}"
-file write file9 _n "\userpackage[flushleft]{threeparttable}"
+file write file9 _n "\usepackage{adjustbox}"
+file write file9 _n "\usepackage[flushleft]{threeparttable}"
 file write file9 _n	"\begin{document}"
 
 file write file9 _n "\begin{table}[h]\centering" 
 
-file write file9 _n "\caption{Spillover From Hispanic to Hispanic} \scalebox{0.92} {\label{tab:results_hispanics} \begin{threeparttable}"
+file write file9 _n "\caption{Spillover From Hispanic to Hispanic}"
+file write file9 _n "\begin{adjustbox}{totalheight=.95\textheight}"
+file write file9 _n "\begin{threeparttable}"
 file write file9 _n "\begin{tabular}{lc|c}"
 file write file9 _n "\toprule"
 file write file9 _n "\midrule"
-file write file9 _n "& \multicolumn{1}{c}{Cognitive Scores} & \multicolumn{1}{c}{Non-cognitive Scores}\\ \cline{2-7}"
+file write file9 _n "& \multicolumn{1}{c}{Cognitive Scores} & \multicolumn{1}{c}{Non-cognitive Scores}\\"
 file write file9 _n "& Fixed Effect & Fixed Effect \\"
 file write file9 _n " $ d $ (meters)& (1) & (2) \\"
 file write file9 _n "\midrule"
+
 
 **Running main regressions	
 
@@ -145,6 +155,7 @@ file write file9 _n "\item Robust standard errors, clustered at the individual l
 file write file9 _n "\item *** p$<$0.01, ** p$<$0.05, * p$<$0.1"
 file write file9 _n "\end{tablenotes}"
 file write file9 _n "\end{threeparttable}"
+file write file9 _n "\end{adjustbox}"
 file write file9 _n "} \end{table}"
 
 file write file9 _n "\end{document}"

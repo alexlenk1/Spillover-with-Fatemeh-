@@ -6,6 +6,13 @@ cd "$repository/data_sets/generated"
 
 use table56_unique_data_clean
 
+*Dropping those kids for whom we lack addresses
+foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
+
+drop if child == `kid'
+}
+
+
 
 ***********************************************************************************
 **If want to reproduce table restricting sample to control kids, add the code below
@@ -39,7 +46,7 @@ sort child test_num
 xtset child test_num	
 	
 
-local distance "500 1000 2000 3000 5000 6000 7000 8000 9000 10000 15000 20000"
+local distance "500 1000 2000 3000 4000 5000 6000 7000 8000 9000 10000 15000 20000"
 local num : list sizeof local(distance)
 local i = 1
 
@@ -49,7 +56,7 @@ file open file4 using "$repository/analysis/tables/tables_pre_percentage_treated
 file write file4 _n "\documentclass[11pt]{article}"
 file write file4 _n "\usepackage{booktabs, multicol, multirow}"
 file write file4 _n "\usepackage{caption}"
-file write file4 _n "\userpackage[flushleft]{threeparttable}"
+file write file4 _n "\usepackage[flushleft]{threeparttable}"
 file write file4 _n	"\begin{document}"
 
 file write file4 _n "\begin{table}[h]\centering" 
@@ -59,7 +66,7 @@ file write file4 _n "\caption{Spillover on Cognitive and Non-cognitive Scores} \
 file write file4 _n "\begin{tabular}{lc|c}"
 file write file4 _n "\toprule"
 file write file4 _n "\midrule"
-file write file4 _n "& \multicolumn{1}{c}{Cognitive Scores} & \multicolumn{1}{c}{Non-cognitive Scores}\\ \cline{2-7}"
+file write file4 _n "& \multicolumn{1}{c}{Cognitive Scores} & \multicolumn{1}{c}{Non-cognitive Scores}\\"
 file write file4 _n "& Fixed Effect & Fixed Effect \\"
 file write file4 _n " $ d $ (meters)& (1) & (2) \\"
 file write file4 _n "\midrule"
