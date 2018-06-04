@@ -7,6 +7,13 @@ cd "$repository/data_sets/generated"
 
 use table34_unique_data_clean
 
+*Dropping those kids for whom we lack addresses
+foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
+
+drop if child == `kid'
+}
+
+
 drop if test =="pre"
 
 ***********************************************************************************
@@ -29,7 +36,7 @@ drop _merge
 
 **Defining Key Explanatory Variable
 foreach distance in 500 1000 2000 3000 4000 5000 6000 7000 8000 9000 10000 15000 20000 {
-gen percent_treated_`distance' = (treated_`distance'_black / (treated_`distance'_black + control_`distance'_black))*100
+gen percent_treated_`distance' = (treated_`distance'_b / (treated_`distance'_b + control_`distance'_b))*100
 }
 
 **Merging with distance to school and block group variable
@@ -71,16 +78,19 @@ file open file10 using "$repository/analysis/tables/tables_no_pre_percentage_tre
 file write file10 "\documentclass[11pt]{article}"
 file write file10 _n "\usepackage{booktabs, multicol, multirow}"
 file write file10 _n "\usepackage{caption}"
-file write file10 _n "\userpackage[flushleft]{threeparttable}"
+file write file10 _n "\usepackage{adjustbox}"
+file write file10 _n "\usepackage[flushleft]{threeparttable}"
 file write file10 _n	"\begin{document}"
 
 file write file10 _n "\begin{table}[h]\centering" 
 
-file write file10 _n "\caption{Spillover From Black to Black} \scalebox{0.92} {\label{tab:results_blacks} \begin{threeparttable}"
+file write file10 _n "\caption{Spillover From Black to Black}"
+file write file10 _n "\begin{adjustbox}{totalheight=.95\textheight}"
+file write file10 _n "\begin{threeparttable}"
 file write file10 _n "\begin{tabular}{lc|c}"
 file write file10 _n "\toprule"
 file write file10 _n "\midrule"
-file write file10 _n "& \multicolumn{1}{c}{Cognitive Scores} & \multicolumn{1}{c}{Non-cognitive Scores}\\ \cline{2-7}"
+file write file10 _n "& \multicolumn{1}{c}{Cognitive Scores} & \multicolumn{1}{c}{Non-cognitive Scores}\\ "
 file write file10 _n "& Fixed Effect & Fixed Effect \\"
 file write file10 _n " $ d $ (meters)& (1) & (2) \\"
 file write file10 _n "\midrule"
@@ -136,6 +146,7 @@ file write file10 _n "\item Robust standard errors, clustered at the individual 
 file write file10 _n "\item *** p$<$0.01, ** p$<$0.05, * p$<$0.1"
 file write file10 _n "\end{tablenotes}"
 file write file10 _n "\end{threeparttable}"
+file write file10 _n "\end{adjustbox}"
 file write file10 _n "} \end{table}"
 
 file write file10 _n "\end{document}"

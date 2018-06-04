@@ -9,6 +9,13 @@ cd "$repository/data_sets/generated"
 
 use table56_unique_data_clean
 
+*Dropping those kids for whom we lack addresses
+foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
+
+drop if child == `kid'
+}
+
+
 drop if test =="pre"
 
 ***********************************************************************************
@@ -26,22 +33,25 @@ file open file2 using "$repository/analysis/tables/tables_no_pre_percentage_trea
 
 
 file write file2 "\documentclass[11pt]{article}"
+file write file2 _n "\usepackage[a4paper,margin=1in,landscape]{geometry}"
 file write file2 _n "\usepackage{booktabs, multicol, multirow}"
 file write file2 _n "\usepackage{caption}"
-file write file2 _n "\userpackage[flushleft]{threeparttable}"
+file write file2 _n "\usepackage{adjustbox}"
+file write file2 _n "\usepackage[flushleft]{threeparttable}"
 file write file2 _n	"\begin{document}"
 
 file write file2 _n "\begin{table}[h]"
-file write file2 _n "\begin{threeparttable}"
 file write file2 _n "\centering"
 file write file2 _n "\caption{Number Neighbors at the Time of Each Assessment}"
 file write file2 _n "\label{tab:Nstat}"
+file write file2 _n "\begin{adjustbox}{width = \textwidth}"
 file write file2 _n "\begin{tabular}{l|cc|cc|cc|cc|cc|cc|cc|cc|cc|cc|cc|cc|cc}"
 file write file2 _n "\toprule"
 file write file2 _n "\midrule"
 file write file2 _n "& \multicolumn{2}{c}{d $=$ 500} & \multicolumn{2}{c}{d $=$ 1000} & \multicolumn{2}{c}{d $=$ 2000} & \multicolumn{2}{c}{d $=$ 3000} & \multicolumn{2}{c}{d $=$ 4000} & \multicolumn{2}{c}{d $=$ 5000} & \multicolumn{2}{c}{d $=$ 6000} & \multicolumn{2}{c}{d $=$ 7000} & \multicolumn{2}{c}{d $=$ 8000} & \multicolumn{2}{c}{d $=$ 9000} & \multicolumn{2}{c}{d $=$ 10000} & \multicolumn{2}{c}{d $=$ 15000} & \multicolumn{2}{c}{d $=$ 20000}\\" 
 file write file2 _n "Assessment (t) & $ N^{{treated}_{d}}$ & $ N^{{control}_{d}}$ & $ N^{{treated}_{d}}$ & $ N^{{control}_{d}}$ & $ N^{{treated}_{d}}$ & $ N^{{control}_{d}}$ & $ N^{{treated}_{d}}$ & $ N^{{control}_{d}}$ & $ N^{{treated}_{d}}$ & $ N^{{control}_{d}}$ & $ N^{{treated}_{d}}$ & $ N^{{control}_{d}}$ & $ N^{{treated}_{d}}$ & $ N^{{control}_{d}}$ & $ N^{{treated}_{d}}$ & $ N^{{control}_{d}}$ & $ N^{{treated}_{d}}$ & $ N^{{control}_{d}}$ & $ N^{{treated}_{d}}$ & $ N^{{control}_{d}}$ & $ N^{{treated}_{d}}$ & $ N^{{control}_{d}}$ & $ N^{{treated}_{d}}$ & $ N^{{control}_{d}}$\\"
 file write file2 _n "\midrule"
+
 
 
 
@@ -108,7 +118,7 @@ file write file2 _n "\multirow{2}{*}{Aged-Out Year 3} & `item500_11' & `item500_
 file write file2 _n "& (`item500_12') & (`item500_26') & (`item1000_12') & (`item1000_26') & (`item2000_12') & (`item2000_26') & (`item3000_12') & (`item3000_26') & (`item4000_12') & (`item4000_26') & (`item5000_12') & (`item5000_26')& (`item6000_12') & (`item6000_26') & (`item7000_12') & (`item7000_26') & (`item8000_12') & (`item8000_26') & (`item9000_12') & (`item9000_26') & (`item10000_12') & (`item10000_26') & (`item15000_12') & (`item15000_26') & (`item20000_12') & (`item20000_26')\\"
 file write file2 _n "& & & & & & & & & & & & & & & & & & & & & & & & & &  \\"
 file write file2 _n "\multirow{2}{*}{Aged-Out Year 4} & `item500_13' & `item500_27' & `item1000_13' & `item1000_27' & `item2000_13' & `item2000_27' &  `item3000_13' & `item3000_27' & `item4000_13' & `item4000_27' & `item5000_13' & `item5000_27' & `item6000_13' & `item6000_27' & `item7000_13' & `item7000_27' & `item8000_13' & `item8000_27' & `item9000_13' & `item9000_27' & `item10000_13' & `item10000_27' & `item15000_13' & `item15000_27' & `item20000_13' & `item20000_27' \\"
-file write file2 _n "& (`item500_14') & (`item500_28') & (`item1000_14') & (`item1000_28') & (`item2000_14') & (`item2000_28') & (`item3000_14') & (`item3000_28') & (`item4000_14') & (`item4000_28') & (`item5000_14') & (`item5000_28')& (`item6000_14') & (`item6000_28') & (`item7000_14') & (`item7000_28') & (`item8000_14') & (`item8000_28') & (`item9000_14') & (`item9000_28') & (`item10000_14') & (`item10000_28') & (`item15000_16') & (`item15000_32') & (`item20000_16') & (`item20000_32')\\"
+file write file2 _n "& (`item500_14') & (`item500_28') & (`item1000_14') & (`item1000_28') & (`item2000_14') & (`item2000_28') & (`item3000_14') & (`item3000_28') & (`item4000_14') & (`item4000_28') & (`item5000_14') & (`item5000_28')& (`item6000_14') & (`item6000_28') & (`item7000_14') & (`item7000_28') & (`item8000_14') & (`item8000_28') & (`item9000_14') & (`item9000_28') & (`item10000_14') & (`item10000_28') & (`item15000_14') & (`item15000_28') & (`item20000_14') & (`item20000_28')\\"
 file write file2 _n "\midrule"
 file write file2 _n "\multirow{2}{*}{All} & `itemtotal500_1' & `itemtotal500_4' & `itemtotal1000_1' & `itemtotal1000_4' & `itemtotal2000_1' & `itemtotal2000_4' & `itemtotal13000_1' & `itemtotal3000_4' & `itemtotal14000_1' & `itemtotal4000_4' & `itemtotal15000_1' & `itemtotal5000_4'& `itemtotal16000_1' & `itemtotal6000_4'& `itemtotal7000_1' & `itemtotal7000_4' & `itemtotal8000_1' & `itemtotal8000_4' & `itemtotal9000_1' & `itemtotal9000_4' & `itemtotal10000_1' & `itemtotal10000_4' & `itemtotal15000_1' & `itemtotal15000_4' & `itemtotal20000_1' & `itemtotal20000_4'\\"
 file write file2 _n "& (`itemtotal500_2') & (`itemtotal500_5') & (`itemtotal1000_2') & (`itemtotal1000_5') & (`itemtotal2000_2') & (`itemtotal2000_5') & (`itemtotal3000_2') & (`itemtotal3000_5') & (`itemtotal4000_2') & (`itemtotal4000_5') & (`itemtotal5000_2') & (`itemtotal5000_5') & (`itemtotal6000_2') & (`itemtotal6000_5') & (`itemtotal7000_2') & (`itemtotal7000_5') & (`itemtotal8000_2') & (`itemtotal8000_5') & (`itemtotal9000_2') & (`itemtotal9000_5') & (`itemtotal10000_2') & (`itemtotal10000_5') & (`itemtotal15000_2') & (`itemtotal15000_5') & (`itemtotal20000_2') & (`itemtotal20000_5')\\"
@@ -117,6 +127,7 @@ file write file2 _n "Obs. & `itemtotal500_3' &`itemtotal500_6' & `itemtotal1000_
 file write file2 _n "\midrule"
 file write file2 _n "\bottomrule"
 file write file2 _n "\end{tabular}"
+file write file2 _n "\end{adjustbox}"
 
 
 file write file2 _n "\begin{tablenotes}"
@@ -146,6 +157,13 @@ cd "$repository/data_sets/generated"
 
 use table56_unique_data_clean
 
+*Dropping those kids for whom we lack addresses
+foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
+
+drop if child == `kid'
+}
+
+
 drop if test =="pre"
 
 ***********************************************************************************
@@ -161,14 +179,17 @@ file open file3 using "$repository/analysis/tables/tables_no_pre_percentage_trea
 
 
 file write file3 "\documentclass[11pt]{article}"
+file write file3 _n "\usepackage[a4paper,margin=1in,landscape]{geometry}"
 file write file3 _n "\usepackage{booktabs, multicol, multirow}"
 file write file3 _n "\usepackage{caption}"
-file write file3 _n "\userpackage[flushleft]{threeparttable}"
+file write file3 _n "\usepackage[flushleft]{threeparttable}"
 file write file3 _n	"\begin{document}"
+file write file3 _n	"\centering"
 
 file write file3 _n	"\begin{table}[]"
 file write file3 _n	"\begin{threeparttable}"
-file write file3 _n	"\centering"
+file write file3 _n	"\footnotesize"
+file write file3 _n	"\setlength\tabcolsep{3pt}"
 file write file3 _n	"\caption{Average Percentage of Treated Neighbors in Our Final Sample}"
 file write file3 _n	"\label{tab:p_sum_stat}"
 file write file3 _n	"\begin{tabular}{l|lllllllllllll}"

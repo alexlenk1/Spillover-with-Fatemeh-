@@ -333,7 +333,7 @@ drop if (test == "ao_y5" | test == "ao_y6")
 drop if has_cog_==0 & has_ncog_ ==0
  
 **Saving file for Tables 3 and 4
-merge m:1 child year using pre_scores
+merge m:1 child year using newv_pre_scores
 
 **Drop those kids that have not been mathced on-prescores (these are kids that had num_cog_beyond_pre or num_ncog_beyond_pre greater than 0)
 drop if _merge==2
@@ -377,13 +377,20 @@ save newv_table34_unique_data_clean, replace
 ***********************************
 ******TABLES 3 and 4 **************
 ***********************************
+*Dropping those kids for whom we lack addresses
+foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
 
+drop if child == `kid'
+}
+
+/*
 merge 1:1 child test year using merged_neigh_count
 
 **Dropping kids not pertaining to our analytical sample
 drop if _merge == 2
 
 drop _merge
+*/
 
 ***********************************************************************************
 **If want to reproduce table restricting sample to control kids, add the code below
@@ -484,6 +491,13 @@ clear all
 cd "$repository/data_sets/generated"
 
 use newv_table34_unique_data_clean
+
+*Dropping those kids for whom we lack addresses
+foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
+
+drop if child == `kid'
+}
+
 
 ***********************************************************************************
 **If want to reproduce table restricting sample to control kids, add the code below
@@ -798,6 +812,8 @@ cd "$repository/data_sets/generated"
 
 use newv_table34_unique_data_clean
 
+
+
 **Merging with number of neighbours
 
 merge 1:1 child test year using merged_neigh_count
@@ -830,6 +846,13 @@ clear all
 cd "$repository/data_sets/generated"
 
 use newv_table56_unique_data_clean
+
+*Dropping those kids for whom we lack addresses
+foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
+
+drop if child == `kid'
+}
+
 
 ***********************************************************************************
 **If want to reproduce table restricting sample to control kids, add the code below
@@ -893,7 +916,7 @@ foreach distance in 500 1000 2000 3000 4000 5000 6000 7000 8000 9000 10000 15000
 		local j = `j' + 1
 		
 		tabstat control_`distance', by(test) save stat(mean semean n)
-		foreach stat in Stat7 Stat5 Stat6 Stat8 Stat1 Stat2 Stat3 Stat4 {
+		foreach stat in Stat5 Stat6 Stat7 Stat1 Stat2 Stat3 Stat4 {
 		mat a = r(`stat')
 		local item`distance'_`i' = string(round(a[1,1], 0.01), "%13.0gc") //Mean
 		local i = `i' + 1
@@ -909,6 +932,7 @@ foreach distance in 500 1000 2000 3000 4000 5000 6000 7000 8000 9000 10000 15000
 		local j = `j' + 1
 		
 }
+
 
 file write file2 _n "\multirow{2}{*}{Mid} & `item500_1' & `item500_15' & `item1000_1' & `item1000_15' & `item2000_1' & `item2000_15' &  `item3000_1' & `item3000_15' & `item4000_1' & `item4000_15' & `item5000_1' & `item5000_15' & `item6000_1' & `item6000_15' & `item7000_1' & `item7000_15' & `item8000_1' & `item8000_15' & `item9000_1' & `item9000_15' & `item10000_1' & `item10000_15' & `item15000_1' & `item15000_15' & `item20000_1' & `item20000_15' \\"
 file write file2 _n "& (`item500_2') & (`item500_16') & (`item1000_2') & (`item1000_16') & (`item2000_2') & (`item2000_16') & (`item3000_2') & (`item3000_16') & (`item4000_2') & (`item4000_16') & (`item5000_2') & (`item5000_16')& (`item6000_2') & (`item6000_16') & (`item7000_2') & (`item7000_16') & (`item8000_2') & (`item8000_16') & (`item9000_2') & (`item9000_16') & (`item10000_2') & (`item10000_16') & (`item15000_2') & (`item15000_16') & (`item20000_2') & (`item20000_16')\\"
@@ -929,7 +953,7 @@ file write file2 _n "\multirow{2}{*}{Aged-Out Year 3} & `item500_11' & `item500_
 file write file2 _n "& (`item500_12') & (`item500_26') & (`item1000_12') & (`item1000_26') & (`item2000_12') & (`item2000_26') & (`item3000_12') & (`item3000_26') & (`item4000_12') & (`item4000_26') & (`item5000_12') & (`item5000_26')& (`item6000_12') & (`item6000_26') & (`item7000_12') & (`item7000_26') & (`item8000_12') & (`item8000_26') & (`item9000_12') & (`item9000_26') & (`item10000_12') & (`item10000_26') & (`item15000_12') & (`item15000_26') & (`item20000_12') & (`item20000_26')\\"
 file write file2 _n "& & & & & & & & & & & & & & & & & & & & & & & & & &  \\"
 file write file2 _n "\multirow{2}{*}{Aged-Out Year 4} & `item500_13' & `item500_27' & `item1000_13' & `item1000_27' & `item2000_13' & `item2000_27' &  `item3000_13' & `item3000_27' & `item4000_13' & `item4000_27' & `item5000_13' & `item5000_27' & `item6000_13' & `item6000_27' & `item7000_13' & `item7000_27' & `item8000_13' & `item8000_27' & `item9000_13' & `item9000_27' & `item10000_13' & `item10000_27' & `item15000_13' & `item15000_27' & `item20000_13' & `item20000_27' \\"
-file write file2 _n "& (`item500_14') & (`item500_28') & (`item1000_14') & (`item1000_28') & (`item2000_14') & (`item2000_28') & (`item3000_14') & (`item3000_28') & (`item4000_14') & (`item4000_28') & (`item5000_14') & (`item5000_28')& (`item6000_14') & (`item6000_28') & (`item7000_14') & (`item7000_28') & (`item8000_14') & (`item8000_28') & (`item9000_14') & (`item9000_28') & (`item10000_14') & (`item10000_28') & (`item15000_16') & (`item15000_32') & (`item20000_16') & (`item20000_32')\\"
+file write file2 _n "& (`item500_14') & (`item500_28') & (`item1000_14') & (`item1000_28') & (`item2000_14') & (`item2000_28') & (`item3000_14') & (`item3000_28') & (`item4000_14') & (`item4000_28') & (`item5000_14') & (`item5000_28')& (`item6000_14') & (`item6000_28') & (`item7000_14') & (`item7000_28') & (`item8000_14') & (`item8000_28') & (`item9000_14') & (`item9000_28') & (`item10000_14') & (`item10000_28') & (`item15000_14') & (`item15000_28') & (`item20000_14') & (`item20000_28')\\"
 file write file2 _n "\midrule"
 file write file2 _n "\multirow{2}{*}{All} & `itemtotal500_1' & `itemtotal500_4' & `itemtotal1000_1' & `itemtotal1000_4' & `itemtotal2000_1' & `itemtotal2000_4' & `itemtotal13000_1' & `itemtotal3000_4' & `itemtotal14000_1' & `itemtotal4000_4' & `itemtotal15000_1' & `itemtotal5000_4'& `itemtotal16000_1' & `itemtotal6000_4'& `itemtotal7000_1' & `itemtotal7000_4' & `itemtotal8000_1' & `itemtotal8000_4' & `itemtotal9000_1' & `itemtotal9000_4' & `itemtotal10000_1' & `itemtotal10000_4' & `itemtotal15000_1' & `itemtotal15000_4' & `itemtotal20000_1' & `itemtotal20000_4'\\"
 file write file2 _n "& (`itemtotal500_2') & (`itemtotal500_5') & (`itemtotal1000_2') & (`itemtotal1000_5') & (`itemtotal2000_2') & (`itemtotal2000_5') & (`itemtotal3000_2') & (`itemtotal3000_5') & (`itemtotal4000_2') & (`itemtotal4000_5') & (`itemtotal5000_2') & (`itemtotal5000_5') & (`itemtotal6000_2') & (`itemtotal6000_5') & (`itemtotal7000_2') & (`itemtotal7000_5') & (`itemtotal8000_2') & (`itemtotal8000_5') & (`itemtotal9000_2') & (`itemtotal9000_5') & (`itemtotal10000_2') & (`itemtotal10000_5') & (`itemtotal15000_2') & (`itemtotal15000_5') & (`itemtotal20000_2') & (`itemtotal20000_5')\\"
@@ -966,6 +990,12 @@ clear all
 cd "$repository/data_sets/generated"
 
 use newv_table56_unique_data_clean
+
+*Dropping those kids for whom we lack addresses
+foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
+
+drop if child == `kid'
+}
 
 ***********************************************************************************
 **If want to reproduce table restricting sample to control kids, add the code below
@@ -1053,6 +1083,12 @@ clear all
 cd "$repository/data_sets/generated"
 
 use newv_table56_unique_data_clean
+
+*Dropping those kids for whom we lack addresses
+foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
+
+drop if child == `kid'
+}
 
 ***********************************************************************************
 **If want to reproduce table restricting sample to control kids, add the code below
@@ -1174,6 +1210,12 @@ clear all
 cd "$repository/data_sets/generated"
 
 use newv_table56_unique_data_clean
+
+*Dropping those kids for whom we lack addresses
+foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
+
+drop if child == `kid'
+}
 
 ***********************************************************************************
 **If want to reproduce table restricting sample to control kids, add the code below
@@ -1356,6 +1398,12 @@ cd "$repository/data_sets/generated"
 
 use newv_table34_unique_data_clean
 
+*Dropping those kids for whom we lack addresses
+foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
+
+drop if child == `kid'
+}
+
 
 ***********************************************************************************
 **If want to reproduce table restricting sample to control kids, add the code below
@@ -1510,6 +1558,13 @@ cd "$repository/data_sets/generated"
 
 use newv_table34_unique_data_clean
 
+*Dropping those kids for whom we lack addresses
+foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
+
+drop if child == `kid'
+}
+
+
 ***********************************************************************************
 **If want to reproduce table restricting sample to control kids, add the code below
 
@@ -1655,6 +1710,12 @@ clear all
 cd "$repository/data_sets/generated"
 
 use newv_table56_unique_data_clean
+
+*Dropping those kids for whom we lack addresses
+foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
+
+drop if child == `kid'
+}
 
 ***********************************************************************************
 **If want to reproduce table restricting sample to control kids, add the code below
@@ -1836,6 +1897,12 @@ cd "$repository/data_sets/generated"
 
 use newv_table34_unique_data_clean
 
+*Dropping those kids for whom we lack addresses
+foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
+
+drop if child == `kid'
+}
+
 ***********************************************************************************
 **If want to reproduce table restricting sample to control kids, add the code below
 
@@ -1991,6 +2058,12 @@ cd "$repository/data_sets/generated"
 
 use newv_table34_unique_data_clean
 
+*Dropping those kids for whom we lack addresses
+foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
+
+drop if child == `kid'
+}
+
 ***********************************************************************************
 **If want to reproduce table restricting sample to control kids, add the code below
 
@@ -2132,6 +2205,12 @@ cd "$repository/data_sets/generated"
 
 use newv_table34_unique_data_clean
 
+*Dropping those kids for whom we lack addresses
+foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
+
+drop if child == `kid'
+}
+
 ***********************************************************************************
 **If want to reproduce table restricting sample to control kids, add the code below
 
@@ -2237,7 +2316,12 @@ merge m:1 child using `file'
 drop _merge
 } 
 
-	
+*Dropping those kids for whom we lack addresses
+foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
+
+drop if child == `kid'
+}
+
 replace age_pre = . if age_pre == 0	
 
 **Creating factor variables
@@ -2395,6 +2479,12 @@ clear all
 cd "$repository/data_sets/generated"
 
 use newv_table34_unique_data_clean
+
+*Dropping those kids for whom we lack addresses
+foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
+
+drop if child == `kid'
+}
 
 ***********************************************************************************
 **If want to reproduce table restricting sample to control kids, add the code below
