@@ -7,6 +7,11 @@ cd "$repository/data_sets/generated"
 
 use table34_unique_data_clean
 
+*Dropping those kids for whom we lack addresses
+foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
+
+drop if child == `kid'
+}
 ***********************************************************************************
 **If want to reproduce table restricting sample to control kids, add the code below
 
@@ -27,12 +32,12 @@ drop _merge
 
 **Defining Key Explanatory Variable
 foreach distance in 500 1000 2000 3000 4000 5000 6000 7000 8000 9000 10000 15000 20000 {
-gen percent_treated_`distance' = (treated_`distance'_female / (treated_`distance'_female + control_`distance'_female))*100
+gen percent_treated_`distance' = (treated_`distance'_f / (treated_`distance'_f + control_`distance'_f))*100
 }
 
 **Generated Num Total Neighbors
 foreach distance in 500 1000 2000 3000 4000 5000 6000 7000 8000 9000 10000 15000 20000 {
-gen total_neigh_`distance' = treated_`distance'_female + control_`distance'_female
+gen total_neigh_`distance' = treated_`distance'_f + control_`distance'_f
 }
 
 **Merging with distance to school and block group variable
@@ -75,16 +80,17 @@ file open file7 using "$repository/analysis/tables/tables_pre_number_treated/tab
 file write file7 "\documentclass[11pt]{article}"
 file write file7 _n "\usepackage{booktabs, multicol, multirow}"
 file write file7 _n "\usepackage{caption}"
-file write file7 _n "\userpackage[flushleft]{threeparttable}"
+file write file7 _n "\usepackage[flushleft]{threeparttable}"
 file write file7 _n	"\begin{document}"
 
-file write file7 _n "\begin{table}[h]\centering" 
+file write file7 _n "\begin{table}[h]\centering\small" 
 
-file write file7 _n "\caption{Spillover From Girls to  Girls} \scalebox{0.92} {\label{tab:results_girls} \begin{threeparttable}"
+file write file7 _n "\caption{Spillover From Girls to  Girls} \begin{threeparttable}"
+file write file7 _n "\renewcommand{\arraystretch}{.8}"
 file write file7 _n "\begin{tabular}{lc|c}"
 file write file7 _n "\toprule"
 file write file7 _n "\midrule"
-file write file7 _n "& \multicolumn{1}{c}{Cognitive Scores} & \multicolumn{1}{c}{Non-cognitive Scores}\\ \cline{2-7}"
+file write file7 _n "& \multicolumn{1}{c}{Cognitive Scores} & \multicolumn{1}{c}{Non-cognitive Scores}\\"
 file write file7 _n "& Fixed Effect & Fixed Effect \\"
 file write file7 _n " $ d $ (meters)& (1) & (2) \\"
 file write file7 _n "\midrule"
@@ -97,25 +103,25 @@ foreach d of local distance  {
 	
 
 	***FIXED EFFECTS
-	quietly xtreg std_`assess' treated_`d'_female total_neigh_`d' i.test_num if has_`assess' == 1 & gender == "Female", fe cluster(child) 
+	quietly xtreg std_`assess' treated_`d'_f total_neigh_`d' i.test_num if has_`assess' == 1 & gender == "Female", fe cluster(child) 
 	
 	matrix d = r(table) 
 
 	*adding stars
 		if d[4,1] < 0.01 {
-			local item_`j'_`d' = string(round(_b[treated_`d'_female], .0001), "%13.0gc") + "***"
+			local item_`j'_`d' = string(round(_b[treated_`d'_f], .0001), "%13.0gc") + "***"
 		}
 		else if d[4,1] < 0.05 & d[4,1] >= 0.01 {
-			local item_`j'_`d' = string(round(_b[treated_`d'_female], .0001), "%13.0gc") + "**"
+			local item_`j'_`d' = string(round(_b[treated_`d'_f], .0001), "%13.0gc") + "**"
 		}	
 		else if d[4,1] < 0.1 & d[4,1] >= 0.05 {
-			local item_`j'_`d' = string(round(_b[treated_`d'_female], .0001), "%13.0gc") + "*"
+			local item_`j'_`d' = string(round(_b[treated_`d'_f], .0001), "%13.0gc") + "*"
 		}
 		else {
-			local item_`j'_`d' = string(round(_b[treated_`d'_female], .0001), "%13.0gc")
+			local item_`j'_`d' = string(round(_b[treated_`d'_f], .0001), "%13.0gc")
 		}		
 		
-		local se_`j'_`d' = string(round(_se[treated_`d'_female], .0001), "%13.0gc")
+		local se_`j'_`d' = string(round(_se[treated_`d'_f], .0001), "%13.0gc")
 		
 		local j = `j' + 1
 

@@ -6,6 +6,12 @@ cd "$repository/data_sets/generated"
 
 use table34_unique_data_clean
 
+*Dropping those kids for whom we lack addresses
+foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
+
+drop if child == `kid'
+}
+
 ***********************************************************************************
 **If want to reproduce table restricting sample to control kids, add the code below
 
@@ -79,17 +85,21 @@ file open file13 using "$repository/analysis/tables/tables_pre_number_treated/ta
 file write file13 _n "\documentclass[11pt]{article}"
 file write file13 _n "\usepackage{booktabs, multicol, multirow}"
 file write file13 _n "\usepackage{caption}"
-file write file13 _n "\userpackage[flushleft]{threeparttable}"
+file write file13 _n "\usepackage{adjustbox}"
+file write file13 _n "\usepackage[flushleft]{threeparttable}"
 file write file13 _n	"\begin{document}"
 
-file write file13 _n "\begin{table}[H]\centering \caption{The Effect from Parent vs. Child Programs}  \scalebox{.99}{\label{tab:treatments}  \begin{threeparttable}"
+file write file13 _n "\begin{table}[H]\centering \caption{The Effect from Parent vs. Child Programs}"
+file write file13 _n "\begin{adjustbox}{totalheight = \textheight}"
+file write file13 _n "\begin{threeparttable}"
 file write file13 _n "\begin{tabular}{cc|c}"
 file write file13 _n "\toprule"
 file write file13 _n "\midrule"
-file write file13 _n "& \multicolumn{1}{c}{Cognitive Scores} & \multicolumn{1}{c}{Non-cognitive Scores}\\ \cline{2-7}"
+file write file13 _n "& \multicolumn{1}{c}{Cognitive Scores} & \multicolumn{1}{c}{Non-cognitive Scores}\\ "
 file write file13 _n "& Fixed Effect & Fixed Effect\\"
 file write file13 _n "Distance & (1) & (2) \\"
 file write file13 _n "\midrule"
+
 
 **Running mechanism regressions	
 
@@ -162,6 +172,7 @@ file write file13 _n "\item Robust standard errors, clustered at the individual 
 file write file13 _n "\item *** p$<$0.01, ** p$<$0.05, * p$<$0.1"
 file write file13 _n "\end{tablenotes}"
 file write file13 _n "\end{threeparttable}"
+file write file13 _n "\end{adjustbox}"
 file write file13 _n "} \end{table}"
 
 file write file13 _n "\end{document}"

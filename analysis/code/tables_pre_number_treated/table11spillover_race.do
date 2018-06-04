@@ -8,6 +8,11 @@ cd "$repository/data_sets/generated"
 
 use table56_unique_data_clean
 
+*Dropping those kids for whom we lack addresses
+foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
+
+drop if child == `kid'
+}
 
 ***********************************************************************************
 **If want to reproduce table restricting sample to control kids, add the code below
@@ -59,14 +64,17 @@ file open file8 using "$repository/analysis/tables/tables_pre_number_treated/tab
 file write file8 "\documentclass[11pt]{article}"
 file write file8 _n "\usepackage{booktabs, multicol, multirow}"
 file write file8 _n "\usepackage{caption}"
-file write file8 _n "\userpackage[flushleft]{threeparttable}"
+file write file8 _n "\usepackage{adjustbox}"
+file write file8 _n "\usepackage[flushleft]{threeparttable}"
 file write file8 _n	"\begin{document}"
 
-file write file8 _n "\begin{table}[H]\centering \caption{\small Spillover Effects by Race  }  \scalebox{1}{\label{tab:results_race} \begin{threeparttable}" 
+file write file8 _n "\begin{table}[h]\centering \caption{\small Spillover Effects by Race  }"
+file write file8 _n "\begin{minipage}{.5\linewidth}"
+file write file8 _n "\begin{adjustbox}{width = \textwidth}"
 file write file8 _n "\begin{tabular}{lc|c}"
 file write file8 _n "\toprule"
 file write file8 _n "\midrule"
-file write file8 _n "& \multicolumn{1}{c}{Cognitive Scores} & \multicolumn{1}{c}{Non-cognitive Scores}\\ \cline{2-7}"
+file write file8 _n "& \multicolumn{1}{c}{Cognitive Scores} & \multicolumn{1}{c}{Non-cognitive Scores}\\"
 file write file8 _n "& Fixed Effect & Fixed Effect \\"
 file write file8 _n "$ d $ (meters) & (1) & (2) \\"
 file write file8 _n "\midrule"
@@ -113,7 +121,23 @@ foreach d of local distance  {
 }
 
 file write file8 _n "& \multicolumn{2}{c}{}\\"
-file write file8 _n "& \multicolumn{2}{c}{Control Blacks}\\ \cline{2-7}"
+file write file8 _n "\midrule"
+file write file8 _n "\bottomrule"
+file write file8 _n "\end{tabular}"
+file write file8 _n "\end{adjustbox}"
+file write file8 _n "\end{minipage} &"
+
+
+file write file8 _n "\begin{minipage}{.5\linewidth}"
+file write file8 _n "\begin{adjustbox}{width = \textwidth}"
+file write file8 _n "\begin{tabular}{lc|c}"
+file write file8 _n "\toprule"
+file write file8 _n "\midrule"
+file write file8 _n "& \multicolumn{1}{c}{Cognitive Scores} & \multicolumn{1}{c}{Non-cognitive Scores}\\"
+file write file8 _n "& Fixed Effect & Fixed Effect \\"
+file write file8 _n "$ d $ (meters) & (1) & (2) \\"
+file write file8 _n "\midrule"
+file write file8 _n "& \multicolumn{2}{c}{Control Blacks}\\"
 
 
 ** SPILL-OVER BLACKS
@@ -165,9 +189,14 @@ foreach d of local distance  {
 }
 	
 
-	
+
+file write file8 _n "& \multicolumn{2}{c}{}\\"
 file write file8 _n "\midrule"
 file write file8 _n "\bottomrule"
+file write file8 _n "\end{tabular}"
+file write file8 _n "\end{adjustbox}"
+file write file8 _n "\end{minipage}"
+	
 file write file8 _n "\end{tabular}"
 file write file8 _n "\begin{tablenotes}"
 file write file8 _n "\footnotesize"

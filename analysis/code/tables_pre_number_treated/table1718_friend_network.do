@@ -62,7 +62,7 @@ file open file14 using "$repository/analysis/tables/table17_friend_network_summa
 file write file14 _n "\documentclass[11pt]{article}"
 file write file14 _n "\usepackage{booktabs, multicol, multirow}"
 file write file14 _n "\usepackage{caption}"
-file write file14 _n "\userpackage[flushleft]{threeparttable}"
+file write file14 _n "\usepackage[flushleft]{threeparttable}"
 file write file14 _n	"\begin{document}"
 
 file write file14 _n "\begin{table}[H]\centering \caption{Summary statistics of surveyed kids \label{sumstat_survey}}"
@@ -242,7 +242,7 @@ file open file15 using "$repository/analysis/tables/table18_friend_network_quant
 file write file15 _n "\documentclass[11pt]{article}"
 file write file15 _n "\usepackage{booktabs, multicol, multirow}"
 file write file15 _n "\usepackage{caption}"
-file write file15 _n "\userpackage[flushleft]{threeparttable}"
+file write file15 _n "\usepackage[flushleft]{threeparttable}"
 file write file15 _n	"\begin{document}"
 
 

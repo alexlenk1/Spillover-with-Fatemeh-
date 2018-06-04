@@ -7,6 +7,12 @@ cd "$repository/data_sets/generated"
 
 use table34_unique_data_clean
 
+*Dropping those kids for whom we lack addresses
+foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
+
+drop if child == `kid'
+}
+
 
 ***********************************************************************************
 **If want to reproduce table restricting sample to control kids, add the code below
@@ -32,17 +38,17 @@ drop _merge
 foreach distance in 500 1000 2000 3000 4000 5000 6000 7000 8000 9000 10000 15000 20000 {
 
 
-gen number_treated_`distance'_ownrace = treated_`distance'_hispanic if race == "Hispanic"
-gen number_treated_`distance'_otherrace = treated_`distance'_black + treated_`distance'_missing + treated_`distance'_other + treated_`distance'_white if race == "Hispanic"
+gen number_treated_`distance'_ownrace = treated_`distance'_h if race == "Hispanic"
+gen number_treated_`distance'_otherrace = treated_`distance'_b + treated_`distance'_n + treated_`distance'_o + treated_`distance'_w if race == "Hispanic"
 
-replace number_treated_`distance'_ownrace = treated_`distance'_black if race == "African American"
-replace number_treated_`distance'_otherrace = treated_`distance'_hispanic + treated_`distance'_missing + treated_`distance'_other + treated_`distance'_white if race == "African American"
+replace number_treated_`distance'_ownrace = treated_`distance'_b if race == "African American"
+replace number_treated_`distance'_otherrace = treated_`distance'_h + treated_`distance'_n + treated_`distance'_o + treated_`distance'_w if race == "African American"
 
-replace number_treated_`distance'_ownrace = treated_`distance'_white if race == "White Non-Hispanic"
-replace number_treated_`distance'_otherrace = treated_`distance'_black + treated_`distance'_missing + treated_`distance'_other + treated_`distance'_hispanic if race == "White Non-Hispanic"
+replace number_treated_`distance'_ownrace = treated_`distance'_w if race == "White Non-Hispanic"
+replace number_treated_`distance'_otherrace = treated_`distance'_b + treated_`distance'_n + treated_`distance'_o + treated_`distance'_h if race == "White Non-Hispanic"
 
-replace number_treated_`distance'_ownrace = treated_`distance'_other if race == "Other"
-replace number_treated_`distance'_otherrace = treated_`distance'_black + treated_`distance'_missing + treated_`distance'_white + treated_`distance'_hispanic if race == "Other"
+replace number_treated_`distance'_ownrace = treated_`distance'_o if race == "Other"
+replace number_treated_`distance'_otherrace = treated_`distance'_b + treated_`distance'_n + treated_`distance'_w + treated_`distance'_h if race == "Other"
 }
 
 **Generated Num Total Neighbors
@@ -90,16 +96,19 @@ file open file9 using "$repository/analysis/tables/tables_pre_number_treated/tab
 file write file9 "\documentclass[11pt]{article}"
 file write file9 _n "\usepackage{booktabs, multicol, multirow}"
 file write file9 _n "\usepackage{caption}"
-file write file9 _n "\userpackage[flushleft]{threeparttable}"
+file write file9 _n "\usepackage{adjustbox}"
+file write file9 _n "\usepackage[flushleft]{threeparttable}"
 file write file9 _n	"\begin{document}"
 
-file write file9 _n "\begin{table}[h]\centering" 
+file write file9 _n "\begin{table}[h]\centering\small" 
 
-file write file9 _n "\caption{Spillover Own Race and Other Race} \scalebox{0.5} {\label{tab:results_hispanics} \begin{threeparttable}"
+file write file9 _n "\caption{Spillover Own Race and Other Race} \begin{threeparttable}"
+file write file9 _n "\renewcommand{\arraystretch}{.85}"
+file write file9 _n "\begin{adjustbox}{width = \textwidth}"
 file write file9 _n "\begin{tabular}{lcc|cc|cc}"
 file write file9 _n "\toprule"
 file write file9 _n "\midrule"
-file write file9 _n "& \multicolumn{2}{c}{All Races} & \multicolumn{2}{c}{Subsample of Blacks} & \multicolumn{2}{c}{Subsample of Hispanics} \\ \cline{2-7}"
+file write file9 _n "& \multicolumn{2}{c}{All Races} & \multicolumn{2}{c}{Subsample of Blacks} & \multicolumn{2}{c}{Subsample of Hispanics} \\"
 file write file9 _n "& Cognitive Score & Non-Cognitive Score & Cognitive Score & Non-Cognitive Score & Cognitive Score & Non-Cognitive Score \\"
 file write file9 _n " $ d $ (meters)& (1) & (2) & (3) & (4) & (5) & (6) \\"
 file write file9 _n "\midrule"
@@ -293,10 +302,10 @@ foreach d of local distance  {
 	}
 	local i = `i' + 1
 }
-	
 file write file9 _n "\midrule"
 file write file9 _n "\bottomrule"
 file write file9 _n "\end{tabular}"
+file write file9 _n "\end{adjustbox}"
 file write file9 _n "\begin{tablenotes}"
 file write file9 _n "\footnotesize"
 
