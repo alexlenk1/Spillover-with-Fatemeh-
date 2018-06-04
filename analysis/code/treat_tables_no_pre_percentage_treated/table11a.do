@@ -7,6 +7,12 @@ cd "$repository/data_sets/generated"
 
 use table34_unique_data_clean
 
+*Dropping those kids for whom we lack addresses
+foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
+
+drop if child == `kid'
+}
+
 
 ***********************************************************************************
 **If want to reproduce table restricting sample to control kids, add the code below
@@ -20,7 +26,7 @@ keep  if (T == 1 & first_random == 1) | (CT== 1 & second_random == 1) | (TT == 1
 
 **Merging with number of neighbors of different races Hispanic
 
-foreach neighbor in merged_hispanic_neigh_count merged_black_neigh_count merged_missing_race_neigh_count merged_white_neigh_count merged_other_race_neigh_count merged_neigh_count_incomplete {
+foreach neighbor in merged_hispanic_neigh_count merged_black_neigh_count merged_missing_race_neigh_count merged_white_neigh_count merged_other_race_neigh_count merged_neigh_count {
 
 merge 1:1 child test year using `neighbor'
 **Drop observations not pertaining to our analytical sample
@@ -32,17 +38,17 @@ drop _merge
 foreach distance in 500 1000 2000 3000 4000 5000 6000 7000 8000 9000 10000 {
 
 
-gen percent_treated_`distance'_ownrace = (treated_`distance'_hispanic / (treated_`distance'_hispanic + control_`distance'_hispanic))*100 if race == "Hispanic"
-gen percent_treated_`distance'_otherrace = ((treated_`distance'_black + treated_`distance'_missing + treated_`distance'_other + treated_`distance'_white)/ (treated_`distance'_black + treated_`distance'_missing + treated_`distance'_other + treated_`distance'_white +  control_`distance'_black + control_`distance'_missing + control_`distance'_other + control_`distance'_white))*100 if race == "Hispanic"
+gen percent_treated_`distance'_ownrace = (treated_`distance'_h / (treated_`distance'_h + control_`distance'_h))*100 if race == "Hispanic"
+gen percent_treated_`distance'_otherrace = ((treated_`distance'_b + treated_`distance'_n + treated_`distance'_o + treated_`distance'_w)/ (treated_`distance'_b + treated_`distance'_n + treated_`distance'_o + treated_`distance'_w +  control_`distance'_b + control_`distance'_n + control_`distance'_o + control_`distance'_w))*100 if race == "Hispanic"
 
-replace percent_treated_`distance'_ownrace = (treated_`distance'_black / (treated_`distance'_black + control_`distance'_black))*100 if race == "African American"
-replace percent_treated_`distance'_otherrace = ((treated_`distance'_hispanic + treated_`distance'_missing + treated_`distance'_other + treated_`distance'_white)/ (treated_`distance'_hispanic + treated_`distance'_missing + treated_`distance'_other + treated_`distance'_white +  control_`distance'_hispanic + control_`distance'_missing + control_`distance'_other + control_`distance'_white))*100 if race == "African American"
+replace percent_treated_`distance'_ownrace = (treated_`distance'_b / (treated_`distance'_b + control_`distance'_b))*100 if race == "African American"
+replace percent_treated_`distance'_otherrace = ((treated_`distance'_h + treated_`distance'_n + treated_`distance'_o + treated_`distance'_w)/ (treated_`distance'_h + treated_`distance'_n + treated_`distance'_o + treated_`distance'_w +  control_`distance'_h + control_`distance'_n + control_`distance'_o + control_`distance'_w))*100 if race == "African American"
 
-replace percent_treated_`distance'_ownrace = (treated_`distance'_white / (treated_`distance'_white + control_`distance'_white))*100 if race == "White Non-Hispanic"
-replace percent_treated_`distance'_otherrace = ((treated_`distance'_black + treated_`distance'_missing + treated_`distance'_other + treated_`distance'_hispanic)/ (treated_`distance'_black + treated_`distance'_missing + treated_`distance'_other + treated_`distance'_hispanic +  control_`distance'_black + control_`distance'_missing + control_`distance'_other + control_`distance'_hispanic))*100 if race == "White Non-Hispanic"
+replace percent_treated_`distance'_ownrace = (treated_`distance'_w / (treated_`distance'_w + control_`distance'_w))*100 if race == "White Non-Hispanic"
+replace percent_treated_`distance'_otherrace = ((treated_`distance'_b + treated_`distance'_n + treated_`distance'_o + treated_`distance'_h)/ (treated_`distance'_b + treated_`distance'_n + treated_`distance'_o + treated_`distance'_h +  control_`distance'_b + control_`distance'_n + control_`distance'_o + control_`distance'_h))*100 if race == "White Non-Hispanic"
 
-replace percent_treated_`distance'_ownrace = (treated_`distance'_other / (treated_`distance'_other + control_`distance'_other))*100 if race == "Other"
-replace percent_treated_`distance'_otherrace = ((treated_`distance'_black + treated_`distance'_missing + treated_`distance'_white + treated_`distance'_hispanic)/ (treated_`distance'_black + treated_`distance'_missing + treated_`distance'_white + treated_`distance'_hispanic +  control_`distance'_black + control_`distance'_missing + control_`distance'_white + control_`distance'_hispanic))*100 if race == "Other"
+replace percent_treated_`distance'_ownrace = (treated_`distance'_o / (treated_`distance'_o + control_`distance'_o))*100 if race == "Other"
+replace percent_treated_`distance'_otherrace = ((treated_`distance'_b + treated_`distance'_n + treated_`distance'_w + treated_`distance'_h)/ (treated_`distance'_b + treated_`distance'_n + treated_`distance'_w + treated_`distance'_h +  control_`distance'_b + control_`distance'_n + control_`distance'_w + control_`distance'_h))*100 if race == "Other"
 }
 
 **Generated Num Total Neighbors
@@ -91,16 +97,19 @@ file open file9 using "$repository/analysis/tables/treat_tables_no_pre_percentag
 file write file9 "\documentclass[11pt]{article}"
 file write file9 _n "\usepackage{booktabs, multicol, multirow}"
 file write file9 _n "\usepackage{caption}"
-file write file9 _n "\userpackage[flushleft]{threeparttable}"
+file write file9 _n "\usepackage{adjustbox}"
+file write file9 _n "\usepackage[flushleft]{threeparttable}"
 file write file9 _n	"\begin{document}"
 
-file write file9 _n "\begin{table}[h]\centering" 
+file write file9 _n "\begin{table}[h]\centering\small" 
 
-file write file9 _n "\caption{Spillover Own Race and Other Race} \scalebox{0.5} {\label{tab:results_hispanics} \begin{threeparttable}"
+file write file9 _n "\caption{Spillover Own Race and Other Race} \begin{threeparttable}"
+file write file9 _n "\renewcommand{\arraystretch}{.85}"
+file write file9 _n "\begin{adjustbox}{width = \textwidth}"
 file write file9 _n "\begin{tabular}{lcc|cc|cc}"
 file write file9 _n "\toprule"
 file write file9 _n "\midrule"
-file write file9 _n "& \multicolumn{2}{c}{All Races} & \multicolumn{2}{c}{Subsample of Blacks} & \multicolumn{2}{c}{Subsample of Hispanics} \\ \cline{2-7}"
+file write file9 _n "& \multicolumn{2}{c}{All Races} & \multicolumn{2}{c}{Subsample of Blacks} & \multicolumn{2}{c}{Subsample of Hispanics} \\"
 file write file9 _n "& Cognitive Score & Non-Cognitive Score & Cognitive Score & Non-Cognitive Score & Cognitive Score & Non-Cognitive Score \\"
 file write file9 _n " $ d $ (meters)& (1) & (2) & (3) & (4) & (5) & (6) \\"
 file write file9 _n "\midrule"
@@ -294,10 +303,10 @@ foreach d of local distance  {
 	}
 	local i = `i' + 1
 }
-	
 file write file9 _n "\midrule"
 file write file9 _n "\bottomrule"
 file write file9 _n "\end{tabular}"
+file write file9 _n "\end{adjustbox}"
 file write file9 _n "\begin{tablenotes}"
 file write file9 _n "\footnotesize"
 
