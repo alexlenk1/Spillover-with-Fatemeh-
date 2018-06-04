@@ -372,6 +372,14 @@ drop _merge
 **Creating the same sub-sample as for the Main Regression Analysis in 
 **Table 7
 
+
+*Dropping those kids for whom we lack addresses
+foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
+
+drop if child == `kid'
+}
+
+
 ***********************************************************************************
 **If want to reproduce table restricting sample to control kids, add the code below
 
@@ -422,14 +430,16 @@ file open file16 using "$repository/analysis/tables/tables_no_pre_number_treated
 file write file16 _n "\documentclass[11pt]{article}"
 file write file16 _n "\usepackage{booktabs, multicol, multirow}"
 file write file16 _n "\usepackage{caption}"
-file write file16 _n "\userpackage[flushleft]{threeparttable}"
+file write file16 _n "\usepackage{adjustbox}"
+file write file16 _n "\usepackage[flushleft]{threeparttable}"
 file write file16 _n	"\begin{document}"
 
 
-file write file16 _n "\begin{table}[H]\centering \caption{Effect of a 1  Percentage Point  Increase in the Share of Treated Neighbors on Cognitive and Non-cognitive Subtest Scores of Control Kids--OLS Model \label{ols_subtests}}"
-file write file16 _n "\begin{threeparttable} \centering"
+file write file16 _n "\begin{table}[h]\centering \caption{Effect of a 1  Percentage Point  Increase in the Share of Treated Neighbors on Cognitive and Non-cognitive Subtest Scores of Control Kids--OLS Model \label{ols_subtests}}"
+file write file16 _n "\begin{adjustbox} \centering"
+file write file16 _n "\begin{adjustbox}{width = \textwidth}"
 
-file write file16 _n "\begin{tabular}{lccccc|ccc}" 
+file write file16 _n "\begin{tabular}{lccccc|ccccc}" 
 file write file16 _n "\toprule"
 file write file16 _n "\midrule" 
 file write file16 _n "& \multicolumn{5}{c}{Cognitive Sub-scores} & \multicolumn{5}{c}{Non-cognitive Sub-scores}\\" 
@@ -545,6 +555,7 @@ file write file16 _n "\item \textit{Notes:}  Robust standard errors, clustered a
 file write file16 _n "\item *** p$<$0.01, ** p$<$0.05, * p$<$0.1"
 file write file16 _n "\end{tablenotes}"
 file write file16 _n "\end{threeparttable}"
+file write file16 _n "\end{adjustbox}"
 file write file16 _n "\end{table}"
 
 file write file16 _n "\end{document}"
@@ -560,14 +571,16 @@ file open file17 using "$repository/analysis/tables/tables_no_pre_number_treated
 file write file17 _n "\documentclass[11pt]{article}"
 file write file17 _n "\usepackage{booktabs, multicol, multirow}"
 file write file17 _n "\usepackage{caption}"
-file write file17 _n "\userpackage[flushleft]{threeparttable}"
+file write file17 _n "\usepackage{adjustbox}"
+file write file17 _n "\usepackage[flushleft]{threeparttable}"
 file write file17 _n	"\begin{document}"
 
 
-file write file17 _n "\begin{table}[H]\centering \caption{Effect of a 1  Percentage Point  Increase in the Share of Treated Neighbors on Cognitive and Non-cognitive Subtest Scores of Control Kids--Fixed Effect Model \label{fe_subtests}}"
+file write file17 _n "\begin{table}[h]\centering \caption{Effect of a 1  Percentage Point  Increase in the Share of Treated Neighbors on Cognitive and Non-cognitive Subtest Scores of Control Kids--Fixed Effect Model \label{fe_subtests}}"
+file write file17 _n "\begin{adjustbox}{width = \textwidth}"
 file write file17 _n "\begin{threeparttable} \centering"
 
-file write file17 _n "\begin{tabular}{lccccc|ccc}" 
+file write file17 _n "\begin{tabular}{lccccc|ccccc}" 
 file write file17 _n "\toprule"
 file write file17 _n "\midrule" 
 file write file17 _n "& \multicolumn{5}{c}{Cognitive Sub-scores} & \multicolumn{5}{c}{Non-cognitive Sub-scores}\\" 
@@ -683,6 +696,7 @@ file write file17 _n "\item \textit{Notes:}  Robust standard errors, clustered a
 file write file17 _n "\item *** p$<$0.01, ** p$<$0.05, * p$<$0.1"
 file write file17 _n "\end{tablenotes}"
 file write file17 _n "\end{threeparttable}"
+file write file17 _n "\end{adjustbox}"
 file write file17 _n "\end{table}"
 
 file write file17 _n "\end{document}"
@@ -696,14 +710,16 @@ file open file18 using "$repository/analysis/tables/tables_no_pre_number_treated
 file write file18 _n "\documentclass[11pt]{article}"
 file write file18 _n "\usepackage{booktabs, multicol, multirow}"
 file write file18 _n "\usepackage{caption}"
-file write file18 _n "\userpackage[flushleft]{threeparttable}"
+file write file18 _n "\usepackage{adjustbox}"
+file write file18 _n "\usepackage[flushleft]{threeparttable}"
 file write file18 _n	"\begin{document}"
 
 
-file write file18 _n "\begin{table}[H]\centering \caption{Effect of a 1  Percentage Point  Increase in the Share of Treated Neighbors on Cognitive and Non-cognitive Subtest Scores of Control Kids--Random Effect Model\label{re_subtests}}"
+file write file18 _n "\begin{table}[h]\centering \caption{Effect of a 1  Percentage Point  Increase in the Share of Treated Neighbors on Cognitive and Non-cognitive Subtest Scores of Control Kids--Random Effect Model\label{re_subtests}}"
+file write file18 _n "\begin{adjustbox}{width = \textwidth}"
 file write file18 _n "\begin{threeparttable} \centering"
 
-file write file18 _n "\begin{tabular}{lccccc|ccc}" 
+file write file18 _n "\begin{tabular}{lccccc|ccccc}" 
 file write file18 _n "\toprule"
 file write file18 _n "\midrule" 
 file write file18 _n "& \multicolumn{5}{c}{Cognitive Sub-scores} & \multicolumn{5}{c}{Non-cognitive Sub-scores}\\" 
@@ -821,6 +837,7 @@ file write file18 _n "\item \textit{Notes:}  Robust standard errors, clustered a
 file write file18 _n "\item *** p$<$0.01, ** p$<$0.05, * p$<$0.1"
 file write file18 _n "\end{tablenotes}"
 file write file18 _n "\end{threeparttable}"
+file write file18 _n "\end{adjustbox}"
 file write file18 _n "\end{table}"
 
 file write file18 _n "\end{document}"

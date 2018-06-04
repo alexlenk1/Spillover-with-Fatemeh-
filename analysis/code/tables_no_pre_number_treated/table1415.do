@@ -6,6 +6,13 @@ cd "$repository/data_sets/generated"
 
 use table34_unique_data_clean
 
+*Dropping those kids for whom we lack addresses
+foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
+
+drop if child == `kid'
+}
+
+
 drop if test == "pre"
 
 ***********************************************************************************
@@ -139,7 +146,7 @@ sort child test_num
 xtset child test_num	
 	
 
-local ring "0_10000 10000_20000 20000_30000 30000_40000 40000_50000"
+local ring "0-10000 10000-20000 20000-30000 30000-40000 40000-50000"
 local num : list sizeof local(ring)
 local i = 1
 
@@ -153,11 +160,14 @@ file open file12 using "$repository/analysis/tables/tables_no_pre_number_treated
 file write file12 _n "\documentclass[11pt]{article}"
 file write file12 _n "\usepackage{booktabs, multicol, multirow}"
 file write file12 _n "\usepackage{caption}"
-file write file12 _n "\userpackage[flushleft]{threeparttable}"
+file write file12 _n "\usepackage{adjustbox}"
+file write file12 _n "\usepackage[flushleft]{threeparttable}"
 file write file12 _n	"\begin{document}"
 
 
-file write file12 _n "\begin{table}[H]\centering \caption{Spatial Fade-out of Spillover Effects}  \scalebox{1}{ \label{tab:donuts}  \begin{threeparttable}"
+file write file12 _n "\begin{table}[H]\centering \caption{Spatial Fade-out of Spillover Effects}"
+file write file12 _n "\begin{adjustbox}{width = \textwidth}"
+file write file12 _n "\begin{threeparttable}"
 file write file12 _n "\begin{tabular}{lccc|ccc}"
 file write file12 _n "\toprule"
 file write file12 _n "\midrule"
@@ -261,6 +271,7 @@ file write file12 _n "\item Robust standard errors, clustered at the individual 
 file write file12 _n "\item *** p$<$0.01, ** p$<$0.05, * p$<$0.1"
 file write file12 _n "\end{tablenotes}"
 file write file12 _n "\end{threeparttable}"
+file write file12 _n "\end{adjustbox}"
 file write file12 _n "} \end{table}"
 
 

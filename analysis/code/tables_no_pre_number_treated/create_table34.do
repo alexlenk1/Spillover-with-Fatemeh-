@@ -7,13 +7,24 @@ cd "$repository/data_sets/generated"
 
 use table34_unique_data_clean
 
+
+*Dropping those kids for whom we lack addresses
+foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
+
+drop if child == `kid'
+}
+
 drop if test =="pre"
 
+/*
 merge 1:1 child test year using merged_neigh_count
+
 
 keep if _merge == 3
 
 drop _merge
+
+*/
 
 ***********************************************************************************
 **If want to reproduce table restricting sample to control kids, add the code below
@@ -31,7 +42,7 @@ file open file0 using "$repository/analysis/tables/tables_no_pre_number_treated/
 file write file0 "\documentclass[11pt]{article}"
 file write file0 _n "\usepackage{booktabs, multicol, multirow}"
 file write file0 _n "\usepackage{caption}"
-file write file0 _n "\userpackage[flushleft]{threeparttable}"
+file write file0 _n "\usepackage[flushleft]{threeparttable}"
 file write file0 _n	"\begin{document}"
 
 file write file0 _n	"\begin{table}[h]"
@@ -111,6 +122,13 @@ cd "$repository/data_sets/generated"
 
 use table34_unique_data_clean
 
+*Dropping those kids for whom we lack addresses
+foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
+
+drop if child == `kid'
+}
+
+
 drop if test =="pre"
 
 ***********************************************************************************
@@ -130,13 +148,13 @@ file open file1 using "$repository/analysis/tables/tables_no_pre_number_treated/
 file write file1 "\documentclass[11pt]{article}"
 file write file1 _n "\usepackage{booktabs, multicol, multirow}"
 file write file1 _n "\usepackage{caption}"
-file write file1 _n "\userpackage[flushleft]{threeparttable}"
+file write file1 _n "\usepackage[flushleft]{threeparttable}"
 file write file1 _n	"\begin{document}"
 
 file write file1 _n "\setcounter{table}{0}"
 file write file1 _n "\begin{table}[]"
-file write file1 _n "\begin{threeparttable}"
 file write file1 _n "\centering"
+file write file1 _n "\begin{threeparttable}"
 file write file1 _n "\caption{Baseline Summary Statistics for Final Sample}"
 file write file1 _n "\label{tab:sum_stat_demog}"
 file write file1 _n "\scriptsize"
