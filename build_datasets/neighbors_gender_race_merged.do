@@ -1558,7 +1558,7 @@ local distance "500 1000 2000 3000 4000 5000 6000 7000 8000 9000 10000 15000 200
 clear all
 cd "$repository/data_sets/generated"
 
-foreach name in male female black hispanic white other_race missing_race {
+foreach name in m f b h w o n {
 clear all
 cd "$repository/data_sets/generated"
 use neighbors_`name'_circle_500
