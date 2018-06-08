@@ -410,7 +410,7 @@ file open file0 using "$repository/analysis/tables/tables_no_pre_percentage_trea
 file write file0 "\documentclass[11pt]{article}"
 file write file0 _n "\usepackage{booktabs, multicol, multirow}"
 file write file0 _n "\usepackage{caption}"
-file write file0 _n "\userpackage[flushleft]{threeparttable}"
+file write file0 _n "\usepackage[flushleft]{threeparttable}"
 file write file0 _n	"\begin{document}"
 
 file write file0 _n	"\begin{table}[h]"
@@ -518,13 +518,13 @@ file open file1 using "$repository/analysis/tables/tables_no_pre_percentage_trea
 file write file1 "\documentclass[11pt]{article}"
 file write file1 _n "\usepackage{booktabs, multicol, multirow}"
 file write file1 _n "\usepackage{caption}"
-file write file1 _n "\userpackage[flushleft]{threeparttable}"
+file write file1 _n "\usepackage[flushleft]{threeparttable}"
 file write file1 _n	"\begin{document}"
 
 file write file1 _n "\setcounter{table}{0}"
 file write file1 _n "\begin{table}[]"
-file write file1 _n "\begin{threeparttable}"
 file write file1 _n "\centering"
+file write file1 _n "\begin{threeparttable}"
 file write file1 _n "\caption{Baseline Summary Statistics for Final Sample}"
 file write file1 _n "\label{tab:sum_stat_demog}"
 file write file1 _n "\scriptsize"
@@ -841,11 +841,16 @@ save newv_table56_unique_data_clean, replace
 
 
 
+**Create Table 5 and Table 6****
+**Summary tables for number of neighbors at different distances
+
+
+
 clear all
 
 cd "$repository/data_sets/generated"
 
-use newv_table56_unique_data_clean
+use table56_unique_data_clean
 
 *Dropping those kids for whom we lack addresses
 foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
@@ -854,33 +859,35 @@ drop if child == `kid'
 }
 
 
+drop if test =="pre"
+
 ***********************************************************************************
 **If want to reproduce table restricting sample to control kids, add the code below
 
 
-
 keep if (C == 1 & first_random == 1) | (CC == 1 & first_random == 1) | (CT_pretreat == 1) | (CK_prekinder == 1)
-
 
 
 ***********************************************************************************
 
 **Table 5
 
-file open file2 using "$repository/analysis/tables/tables_no_pre_percentage_treated/newv_table5.tex", replace write
+file open file2 using "$repository/analysis/tables/tables_no_pre_percentage_treated/table5.tex", replace write
 
 
 file write file2 "\documentclass[11pt]{article}"
+file write file2 _n "\usepackage[a4paper,margin=1in,landscape]{geometry}"
 file write file2 _n "\usepackage{booktabs, multicol, multirow}"
 file write file2 _n "\usepackage{caption}"
-file write file2 _n "\userpackage[flushleft]{threeparttable}"
+file write file2 _n "\usepackage{adjustbox}"
+file write file2 _n "\usepackage[flushleft]{threeparttable}"
 file write file2 _n	"\begin{document}"
 
 file write file2 _n "\begin{table}[h]"
-file write file2 _n "\begin{threeparttable}"
 file write file2 _n "\centering"
 file write file2 _n "\caption{Number Neighbors at the Time of Each Assessment}"
 file write file2 _n "\label{tab:Nstat}"
+file write file2 _n "\begin{adjustbox}{width = \textwidth}"
 file write file2 _n "\begin{tabular}{l|cc|cc|cc|cc|cc|cc|cc|cc|cc|cc|cc|cc|cc}"
 file write file2 _n "\toprule"
 file write file2 _n "\midrule"
@@ -962,6 +969,7 @@ file write file2 _n "Obs. & `itemtotal500_3' &`itemtotal500_6' & `itemtotal1000_
 file write file2 _n "\midrule"
 file write file2 _n "\bottomrule"
 file write file2 _n "\end{tabular}"
+file write file2 _n "\end{adjustbox}"
 
 
 file write file2 _n "\begin{tablenotes}"
@@ -971,7 +979,6 @@ file write file2 _n "\item \textit{Notes:} This table shows the average number o
 file write file2 _n "\item Standard errors are reported in parentheses." 
 
 file write file2 _n "\end{tablenotes}"
-file write file2 _n "\end{threeparttable}"
 
 file write file2 _n "\end{table}"
 
@@ -989,13 +996,16 @@ clear all
 
 cd "$repository/data_sets/generated"
 
-use newv_table56_unique_data_clean
+use table56_unique_data_clean
 
 *Dropping those kids for whom we lack addresses
 foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
 
 drop if child == `kid'
 }
+
+
+drop if test =="pre"
 
 ***********************************************************************************
 **If want to reproduce table restricting sample to control kids, add the code below
@@ -1004,26 +1014,27 @@ drop if child == `kid'
 keep if (C == 1 & first_random == 1) | (CC == 1 & first_random == 1) | (CT_pretreat == 1) | (CK_prekinder == 1)
 
 
-
 ***********************************************************************************
 
-file open file3 using "$repository/analysis/tables/tables_no_pre_percentage_treated/newv_table6.tex", replace write
+file open file3 using "$repository/analysis/tables/tables_no_pre_percentage_treated/table6.tex", replace write
 
 
 file write file3 "\documentclass[11pt]{article}"
+file write file3 _n "\usepackage[a4paper,margin=1in,landscape]{geometry}"
 file write file3 _n "\usepackage{booktabs, multicol, multirow}"
 file write file3 _n "\usepackage{caption}"
-file write file3 _n "\userpackage[flushleft]{threeparttable}"
+file write file3 _n "\usepackage[flushleft]{threeparttable}"
 file write file3 _n	"\begin{document}"
+file write file3 _n	"\centering"
 
 file write file3 _n	"\begin{table}[]"
 file write file3 _n	"\begin{threeparttable}"
-file write file3 _n	"\centering"
+file write file3 _n	"\footnotesize"
+file write file3 _n	"\setlength\tabcolsep{3pt}"
 file write file3 _n	"\caption{Average Percentage of Treated Neighbors in Our Final Sample}"
 file write file3 _n	"\label{tab:p_sum_stat}"
 file write file3 _n	"\begin{tabular}{l|lllllllllllll}"
 file write file3 _n	"Assessment         & 0.5K meters & 1K meters & 2K meters & 3K meters & 4K meters  & 5K meters & 6K meters & 7K meters & 8K meters & 9K meters & 10K meters & 15K meters & 20K meters \\ \hline \hline"
-
 
 local i = 1
 local j = 1
@@ -1041,7 +1052,6 @@ foreach distance in 500 1000 2000 3000 4000 5000 6000 7000 8000 9000 10000 15000
 		local i = `i' + 1
 		}
 }
-
 
 file write file3 _n	"Mid     & `item500_1' & `item1000_1' & `item2000_1'  &    `item3000_1'      &    `item4000_1' & `item5000_1' & `item6000_1' & `item7000_1' & `item8000_1' & `item9000_1' & `item10000_1' & `item15000_1' & `item20000_1'        \\"
 file write file3 _n	"& (`item500_2')  & (`item1000_2')  & (`item2000_2')  &    (`item3000_2' )    &  (`item4000_2') & (`item5000_2')  & (`item6000_2')  & (`item7000_2')  &    (`item8000_2' )    &  (`item9000_2') & (`item10000_2')  &    (`item15000_2' )    &  (`item20000_2')    \\"
@@ -1074,21 +1084,29 @@ file write file3 _n "\end{document}"
 
 file close file3
 
+
+
+
 ********************************************************************* 
 **Table 7************************************************************
 *********************************************************************
+
+**TABLE 7: MAIN REGRESSIONS*****
 
 clear all
 
 cd "$repository/data_sets/generated"
 
-use newv_table56_unique_data_clean
+use table56_unique_data_clean
 
 *Dropping those kids for whom we lack addresses
 foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
 
 drop if child == `kid'
 }
+
+
+drop if test =="pre"
 
 ***********************************************************************************
 **If want to reproduce table restricting sample to control kids, add the code below
@@ -1099,6 +1117,7 @@ keep if (C == 1 & first_random == 1) | (CC == 1 & first_random == 1) | (CT_pretr
 
 ***********************************************************************************
 
+	
 replace age_pre = . if age_pre == 0	
 
 **Creating factor variables
@@ -1120,17 +1139,17 @@ sort child test_num
 xtset child test_num	
 	
 
-local distance "500 1000 2000 3000 5000 6000 7000 8000 9000 10000 15000 20000"
+local distance "500 1000 2000 3000 4000 5000 6000 7000 8000 9000 10000 15000 20000"
 local num : list sizeof local(distance)
 local i = 1
 
 
-file open file4 using "$repository/analysis/tables/tables_no_pre_percentage_treated/newv_table7.tex", replace write
+file open file4 using "$repository/analysis/tables/tables_no_pre_percentage_treated/table7.tex", replace write
 
 file write file4 _n "\documentclass[11pt]{article}"
 file write file4 _n "\usepackage{booktabs, multicol, multirow}"
 file write file4 _n "\usepackage{caption}"
-file write file4 _n "\userpackage[flushleft]{threeparttable}"
+file write file4 _n "\usepackage[flushleft]{threeparttable}"
 file write file4 _n	"\begin{document}"
 
 file write file4 _n "\begin{table}[h]\centering" 
@@ -1140,7 +1159,7 @@ file write file4 _n "\caption{Spillover on Cognitive and Non-cognitive Scores} \
 file write file4 _n "\begin{tabular}{lc|c}"
 file write file4 _n "\toprule"
 file write file4 _n "\midrule"
-file write file4 _n "& \multicolumn{1}{c}{Cognitive Scores} & \multicolumn{1}{c}{Non-cognitive Scores}\\ \cline{2-7}"
+file write file4 _n "& \multicolumn{1}{c}{Cognitive Scores} & \multicolumn{1}{c}{Non-cognitive Scores}\\"
 file write file4 _n "& Fixed Effect & Fixed Effect \\"
 file write file4 _n " $ d $ (meters)& (1) & (2) \\"
 file write file4 _n "\midrule"
@@ -1152,7 +1171,7 @@ foreach d of local distance  {
 	foreach assess in cog ncog {
 
 	***FIXED EFFECTS
-	quietly xtreg std_`assess' percent_treated_`d'  i.test_num if has_`assess' == 1, fe cluster(child) 
+	quietly xtreg std_`assess' percent_treated_`d' i.test_num if has_`assess' == 1, fe cluster(child) 
 	
 	matrix d = r(table) 
 
@@ -1203,13 +1222,16 @@ file write file4 _n "\end{document}"
 file close file4
 
 
+
 **TABLE 8: SPILL OVER BY GENDER*****
+
+
 
 clear all
 
 cd "$repository/data_sets/generated"
 
-use newv_table56_unique_data_clean
+use table56_unique_data_clean
 
 *Dropping those kids for whom we lack addresses
 foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
@@ -1217,19 +1239,19 @@ foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 
 drop if child == `kid'
 }
 
+
+drop if test =="pre"
+
 ***********************************************************************************
 **If want to reproduce table restricting sample to control kids, add the code below
-
 
 
 keep if (C == 1 & first_random == 1) | (CC == 1 & first_random == 1) | (CT_pretreat == 1) | (CK_prekinder == 1)
 
 
-
 ***********************************************************************************
 
-
-
+	
 replace age_pre = . if age_pre == 0	
 
 **Creating factor variables
@@ -1258,24 +1280,31 @@ local num : list sizeof local(distance)
 local i = 1
 
 
-file open file5 using "$repository/analysis/tables/tables_no_pre_percentage_treated/newv_table8spillover_gender.tex", replace write
+file open file5 using "$repository/analysis/tables/tables_no_pre_percentage_treated/table8spillover_gender.tex", replace write
 
 
 file write file5 "\documentclass[11pt]{article}"
 file write file5 _n "\usepackage{booktabs, multicol, multirow}"
 file write file5 _n "\usepackage{caption}"
-file write file5 _n "\userpackage[flushleft]{threeparttable}"
+file write file5 _n "\usepackage{adjustbox}"
+file write file5 _n "\usepackage{subcaption}"
+file write file5 _n "\usepackage{caption}"
+file write file5 _n "\usepackage[flushleft]{threeparttable}"
 file write file5 _n	"\begin{document}"
 
-file write file5 _n "\begin{table}[H]\centering \caption{\small Spillover Effects by Gender  }  \scalebox{1}{\label{tab:results_gender} \begin{threeparttable}" 
+file write file5 _n "\begin{table}[h]\centering \caption{\small Spillover Effects by Gender  }" 
+file write file5 _n "\begin{tabular}{cc}"
+file write file5 _n "\begin{minipage}{.5\linewidth}"
+file write file5 _n "\centering"
+file write file5 _n "\begin{adjustbox}{width = \textwidth}"
 file write file5 _n "\begin{tabular}{lc|c}"
 file write file5 _n "\toprule"
 file write file5 _n "\midrule"
-file write file5 _n "& \multicolumn{1}{c}{Cognitive Scores} & \multicolumn{1}{c}{Non-cognitive Scores}\\ \cline{2-7}"
+file write file5 _n "& \multicolumn{1}{c}{Cognitive Scores} & \multicolumn{1}{c}{Non-cognitive Scores}\\"
 file write file5 _n "& Fixed Effect & Fixed Effect \\"
 file write file5 _n "$ d $ (meters) & (1) & (2) \\"
 file write file5 _n "\midrule"
-file write file5 _n "& \multicolumn{2}{c}{Control Boys}\\ \cline{2-7}"
+file write file5 _n "& \multicolumn{2}{c}{Control Boys}\\ \cline{1-3}"
 
 **Running Regressions for Boys	
 
@@ -1369,9 +1398,12 @@ foreach d of local distance  {
 }
 	
 
-	
+file write file5 _n "& \multicolumn{2}{c}{}\\"
 file write file5 _n "\midrule"
 file write file5 _n "\bottomrule"
+file write file5 _n "\end{tabular}"
+file write file5 _n "\end{adjustbox}"
+file write file5 _n "\end{minipage}"
 file write file5 _n "\end{tabular}"
 file write file5 _n "\begin{tablenotes}"
 file write file5 _n "\footnotesize"
@@ -1380,7 +1412,6 @@ file write file5 _n "\item \textit{Notes:} Columns 1-3 (4-6) display the effect 
 file write file5 _n "\item Robust standard errors, clustered at the individual level in parentheses"
 file write file5 _n "\item *** p$<$0.01, ** p$<$0.05, * p$<$0.1"
 file write file5 _n "\end{tablenotes}"
-file write file5 _n "\end{threeparttable}"
 
 file write file5 _n "} \end{table}"
 
@@ -1396,7 +1427,7 @@ clear all
 
 cd "$repository/data_sets/generated"
 
-use newv_table34_unique_data_clean
+use table34_unique_data_clean
 
 *Dropping those kids for whom we lack addresses
 foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
@@ -1405,9 +1436,11 @@ drop if child == `kid'
 }
 
 
+drop if test =="pre"
+
+
 ***********************************************************************************
 **If want to reproduce table restricting sample to control kids, add the code below
-
 
 
 keep if (C == 1 & first_random == 1) | (CC == 1 & first_random == 1) | (CT_pretreat == 1) | (CK_prekinder == 1)
@@ -1433,7 +1466,6 @@ drop if _merge == 2
 
 drop _merge
 
-
 **Defining Key Explanatory Variable
 foreach distance in 500 1000 2000 3000 4000 5000 6000 7000 8000 9000 10000 15000 20000 {
 gen percent_treated_`distance' = (treated_`distance'_male / (treated_`distance'_male + control_`distance'_male))*100
@@ -1445,6 +1477,7 @@ merge m:1 child using `file'
 *drop if _merge == 2
 drop _merge
 } 
+
 
 	
 replace age_pre = . if age_pre == 0	
@@ -1472,22 +1505,23 @@ local num : list sizeof local(distance)
 local i = 1
 
 
-file open file6 using "$repository/analysis/tables/tables_no_pre_percentage_treated/newv_table9spillover_boyboy.tex", replace write
+file open file6 using "$repository/analysis/tables/tables_no_pre_percentage_treated/table9spillover_boyboy.tex", replace write
 
 
 file write file6 "\documentclass[11pt]{article}"
 file write file6 _n "\usepackage{booktabs, multicol, multirow}"
 file write file6 _n "\usepackage{caption}"
-file write file6 _n "\userpackage[flushleft]{threeparttable}"
+file write file6 _n "\usepackage[flushleft]{threeparttable}"
 file write file6 _n	"\begin{document}"
 
-file write file6 _n "\begin{table}[h]\centering" 
+file write file6 _n "\begin{table}[h]\centering\small" 
 
-file write file6 _n "\caption{Spillover From Boys to  Boys} \scalebox{0.92} {\label{tab:results_boys} \begin{threeparttable}"
+file write file6 _n "\caption{Spillover From Boys to  Boys}  \begin{threeparttable}"
+file write file6 _n "\renewcommand{\arraystrech}{.8}"
 file write file6 _n "\begin{tabular}{lc|c}"
 file write file6 _n "\toprule"
 file write file6 _n "\midrule"
-file write file6 _n "& \multicolumn{1}{c}{Cognitive Scores} & \multicolumn{1}{c}{Non-cognitive Scores}\\ \cline{2-7}"
+file write file6 _n "& \multicolumn{1}{c}{Cognitive Scores} & \multicolumn{1}{c}{Non-cognitive Scores}\\ "
 file write file6 _n "& Fixed Effect &  Fixed Effect \\"
 file write file6 _n " $ d $ (meters)& (1) & (2) \\"
 file write file6 _n "\midrule"
@@ -1552,11 +1586,12 @@ file close file6
 
 **Table 10: Spillover from Girls to Girls
 
+
 clear all
 
 cd "$repository/data_sets/generated"
 
-use newv_table34_unique_data_clean
+use table34_unique_data_clean
 
 *Dropping those kids for whom we lack addresses
 foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
@@ -1565,9 +1600,10 @@ drop if child == `kid'
 }
 
 
+drop if test =="pre"
+
 ***********************************************************************************
 **If want to reproduce table restricting sample to control kids, add the code below
-
 
 
 keep if (C == 1 & first_random == 1) | (CC == 1 & first_random == 1) | (CT_pretreat == 1) | (CK_prekinder == 1)
@@ -1596,7 +1632,7 @@ merge m:1 child using `file'
 drop _merge
 } 
 
-	
+
 replace age_pre = . if age_pre == 0	
 
 **Creating factor variables
@@ -1622,22 +1658,23 @@ local num : list sizeof local(distance)
 local i = 1
 
 
-file open file7 using "$repository/analysis/tables/tables_no_pre_percentage_treated/newv_table10spillover_girlgirl.tex", replace write
+file open file7 using "$repository/analysis/tables/tables_no_pre_percentage_treated/table10spillover_girlgirl.tex", replace write
 
 
 file write file7 "\documentclass[11pt]{article}"
 file write file7 _n "\usepackage{booktabs, multicol, multirow}"
 file write file7 _n "\usepackage{caption}"
-file write file7 _n "\userpackage[flushleft]{threeparttable}"
+file write file7 _n "\usepackage[flushleft]{threeparttable}"
 file write file7 _n	"\begin{document}"
 
-file write file7 _n "\begin{table}[h]\centering" 
+file write file7 _n "\begin{table}[h]\centering\small" 
 
-file write file7 _n "\caption{Spillover From Girls to  Girls} \scalebox{0.92} {\label{tab:results_girls} \begin{threeparttable}"
+file write file7 _n "\caption{Spillover From Girls to  Girls} \begin{threeparttable}"
+file write file7 _n "\renewcommand{\arraystretch}{.8}"
 file write file7 _n "\begin{tabular}{lc|c}"
 file write file7 _n "\toprule"
 file write file7 _n "\midrule"
-file write file7 _n "& \multicolumn{1}{c}{Cognitive Scores} & \multicolumn{1}{c}{Non-cognitive Scores}\\ \cline{2-7}"
+file write file7 _n "& \multicolumn{1}{c}{Cognitive Scores} & \multicolumn{1}{c}{Non-cognitive Scores}\\"
 file write file7 _n "& Fixed Effect & Fixed Effect \\"
 file write file7 _n " $ d $ (meters)& (1) & (2) \\"
 file write file7 _n "\midrule"
@@ -1650,7 +1687,7 @@ foreach d of local distance  {
 	
 
 	***FIXED EFFECTS
-	quietly xtreg std_`assess' percent_treated_`d'  i.test_num if has_`assess' == 1 & gender == "Female", fe cluster(child) 
+	quietly xtreg std_`assess' percent_treated_`d' i.test_num if has_`assess' == 1 & gender == "Female", fe cluster(child) 
 	
 	matrix d = r(table) 
 
@@ -1700,7 +1737,6 @@ file write file7 _n "\end{document}"
 
 file close file7
 
-
 **TABLE 11: SPILL OVER BY RACE*****
 
 
@@ -1709,7 +1745,7 @@ clear all
 
 cd "$repository/data_sets/generated"
 
-use newv_table56_unique_data_clean
+use table56_unique_data_clean
 
 *Dropping those kids for whom we lack addresses
 foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
@@ -1717,17 +1753,16 @@ foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 
 drop if child == `kid'
 }
 
+
+drop if test =="pre"
+
 ***********************************************************************************
 **If want to reproduce table restricting sample to control kids, add the code below
 
 
-
 keep if (C == 1 & first_random == 1) | (CC == 1 & first_random == 1) | (CT_pretreat == 1) | (CK_prekinder == 1)
 
-
-
 ***********************************************************************************
-
 
 replace age_pre = . if age_pre == 0	
 
@@ -1757,20 +1792,23 @@ local num : list sizeof local(distance)
 local i = 1
 
 
-file open file8 using "$repository/analysis/tables/tables_no_pre_percentage_treated/newv_table11spillover_race.tex", replace write
+file open file8 using "$repository/analysis/tables/tables_no_pre_percentage_treated/table11spillover_race.tex", replace write
 
 
 file write file8 "\documentclass[11pt]{article}"
 file write file8 _n "\usepackage{booktabs, multicol, multirow}"
 file write file8 _n "\usepackage{caption}"
-file write file8 _n "\userpackage[flushleft]{threeparttable}"
+file write file8 _n "\usepackage{adjustbox}"
+file write file8 _n "\usepackage[flushleft]{threeparttable}"
 file write file8 _n	"\begin{document}"
 
-file write file8 _n "\begin{table}[H]\centering \caption{\small Spillover Effects by Race  }  \scalebox{1}{\label{tab:results_race} \begin{threeparttable}" 
+file write file8 _n "\begin{table}[h]\centering \caption{\small Spillover Effects by Race  }"
+file write file8 _n "\begin{minipage}{.5\linewidth}"
+file write file8 _n "\begin{adjustbox}{width = \textwidth}"
 file write file8 _n "\begin{tabular}{lc|c}"
 file write file8 _n "\toprule"
 file write file8 _n "\midrule"
-file write file8 _n "& \multicolumn{1}{c}{Cognitive Scores} & \multicolumn{1}{c}{Non-cognitive Scores}\\ \cline{2-7}"
+file write file8 _n "& \multicolumn{1}{c}{Cognitive Scores} & \multicolumn{1}{c}{Non-cognitive Scores}\\"
 file write file8 _n "& Fixed Effect & Fixed Effect \\"
 file write file8 _n "$ d $ (meters) & (1) & (2) \\"
 file write file8 _n "\midrule"
@@ -1817,8 +1855,23 @@ foreach d of local distance  {
 }
 
 file write file8 _n "& \multicolumn{2}{c}{}\\"
-file write file8 _n "& \multicolumn{2}{c}{Control Blacks}\\ \cline{2-7}"
+file write file8 _n "\midrule"
+file write file8 _n "\bottomrule"
+file write file8 _n "\end{tabular}"
+file write file8 _n "\end{adjustbox}"
+file write file8 _n "\end{minipage} &"
 
+
+file write file8 _n "\begin{minipage}{.5\linewidth}"
+file write file8 _n "\begin{adjustbox}{width = \textwidth}"
+file write file8 _n "\begin{tabular}{lc|c}"
+file write file8 _n "\toprule"
+file write file8 _n "\midrule"
+file write file8 _n "& \multicolumn{1}{c}{Cognitive Scores} & \multicolumn{1}{c}{Non-cognitive Scores}\\"
+file write file8 _n "& Fixed Effect & Fixed Effect \\"
+file write file8 _n "$ d $ (meters) & (1) & (2) \\"
+file write file8 _n "\midrule"
+file write file8 _n "& \multicolumn{2}{c}{Control Blacks}\\"
 
 ** SPILL-OVER BLACKS
 
@@ -1868,18 +1921,22 @@ foreach d of local distance  {
 	local i = `i' + 1
 }
 	
+
 	
+file write file8 _n "& \multicolumn{2}{c}{}\\"
 file write file8 _n "\midrule"
 file write file8 _n "\bottomrule"
 file write file8 _n "\end{tabular}"
+file write file8 _n "\end{adjustbox}"
+file write file8 _n "\end{minipage}"
+	
+file write file8 _n "\end{tabular}"
 file write file8 _n "\begin{tablenotes}"
 file write file8 _n "\footnotesize"
-
 file write file8 _n "\item \textit{Notes:} Columns 1-3 (4-6) display the effect of a 1 percentage point increase in the share of treated neighbors of a control child on his/her standardized cognitive (non-cognitive) score. The upper panel shows the effects on Hispanic and the lower panel shows the effects on Black control kids." 
 file write file8 _n "\item Robust standard errors, clustered at the individual level in parentheses"
 file write file8 _n "\item *** p$<$0.01, ** p$<$0.05, * p$<$0.1"
 file write file8 _n "\end{tablenotes}"
-file write file8 _n "\end{threeparttable}"
 
 file write file8 _n "} \end{table}"
 
@@ -1895,7 +1952,7 @@ clear all
 
 cd "$repository/data_sets/generated"
 
-use newv_table34_unique_data_clean
+use table34_unique_data_clean
 
 *Dropping those kids for whom we lack addresses
 foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
@@ -1903,17 +1960,17 @@ foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 
 drop if child == `kid'
 }
 
+
+drop if test =="pre"
+
 ***********************************************************************************
 **If want to reproduce table restricting sample to control kids, add the code below
-
 
 
 keep if (C == 1 & first_random == 1) | (CC == 1 & first_random == 1) | (CT_pretreat == 1) | (CK_prekinder == 1)
 
 
-
 ***********************************************************************************
-
 
 **Merging with number of Hispanic neighbors
 
@@ -1945,6 +2002,7 @@ merge m:1 child using `file'
 drop _merge
 } 
 
+
 	
 replace age_pre = . if age_pre == 0	
 
@@ -1971,22 +2029,25 @@ local num : list sizeof local(distance)
 local i = 1
 
 
-file open file9 using "$repository/analysis/tables/tables_no_pre_percentage_treated/newv_table12spillover_hispanichispanic.tex", replace write
+file open file9 using "$repository/analysis/tables/tables_no_pre_percentage_treated/table12spillover_hispanichispanic.tex", replace write
 
 
 file write file9 "\documentclass[11pt]{article}"
 file write file9 _n "\usepackage{booktabs, multicol, multirow}"
 file write file9 _n "\usepackage{caption}"
-file write file9 _n "\userpackage[flushleft]{threeparttable}"
+file write file9 _n "\usepackage{adjustbox}"
+file write file9 _n "\usepackage[flushleft]{threeparttable}"
 file write file9 _n	"\begin{document}"
 
 file write file9 _n "\begin{table}[h]\centering" 
 
-file write file9 _n "\caption{Spillover From Hispanic to Hispanic} \scalebox{0.92} {\label{tab:results_hispanics} \begin{threeparttable}"
+file write file9 _n "\caption{Spillover From Hispanic to Hispanic}"
+file write file9 _n "\begin{adjustbox}{totalheight=.95\textheight}"
+file write file9 _n "\begin{threeparttable}"
 file write file9 _n "\begin{tabular}{lc|c}"
 file write file9 _n "\toprule"
 file write file9 _n "\midrule"
-file write file9 _n "& \multicolumn{1}{c}{Cognitive Scores} & \multicolumn{1}{c}{Non-cognitive Scores}\\ \cline{2-7}"
+file write file9 _n "& \multicolumn{1}{c}{Cognitive Scores} & \multicolumn{1}{c}{Non-cognitive Scores}\\"
 file write file9 _n "& Fixed Effect & Fixed Effect \\"
 file write file9 _n " $ d $ (meters)& (1) & (2) \\"
 file write file9 _n "\midrule"
@@ -2042,11 +2103,14 @@ file write file9 _n "\item Robust standard errors, clustered at the individual l
 file write file9 _n "\item *** p$<$0.01, ** p$<$0.05, * p$<$0.1"
 file write file9 _n "\end{tablenotes}"
 file write file9 _n "\end{threeparttable}"
+file write file9 _n "\end{adjustbox}"
 file write file9 _n "} \end{table}"
 
 file write file9 _n "\end{document}"
 
 file close file9
+
+
 
 
 **Table 11: Spillover from Black to Black
@@ -2056,7 +2120,7 @@ clear all
 
 cd "$repository/data_sets/generated"
 
-use newv_table34_unique_data_clean
+use table34_unique_data_clean
 
 *Dropping those kids for whom we lack addresses
 foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
@@ -2064,9 +2128,11 @@ foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 
 drop if child == `kid'
 }
 
+
+drop if test =="pre"
+
 ***********************************************************************************
 **If want to reproduce table restricting sample to control kids, add the code below
-
 
 
 keep if (C == 1 & first_random == 1) | (CC == 1 & first_random == 1) | (CT_pretreat == 1) | (CK_prekinder == 1)
@@ -2094,6 +2160,7 @@ merge m:1 child using `file'
 *drop if _merge == 2
 drop _merge
 } 
+
 	
 replace age_pre = . if age_pre == 0	
 
@@ -2120,25 +2187,30 @@ local num : list sizeof local(distance)
 local i = 1
 
 
-file open file10 using "$repository/analysis/tables/tables_no_pre_percentage_treated/newv_table13spillover_blackblack.tex", replace write
+file open file10 using "$repository/analysis/tables/tables_no_pre_percentage_treated/table13spillover_blackblack.tex", replace write
+
 
 
 file write file10 "\documentclass[11pt]{article}"
 file write file10 _n "\usepackage{booktabs, multicol, multirow}"
 file write file10 _n "\usepackage{caption}"
-file write file10 _n "\userpackage[flushleft]{threeparttable}"
+file write file10 _n "\usepackage{adjustbox}"
+file write file10 _n "\usepackage[flushleft]{threeparttable}"
 file write file10 _n	"\begin{document}"
 
 file write file10 _n "\begin{table}[h]\centering" 
 
-file write file10 _n "\caption{Spillover From Black to Black} \scalebox{0.92} {\label{tab:results_blacks} \begin{threeparttable}"
+file write file10 _n "\caption{Spillover From Black to Black}"
+file write file10 _n "\begin{adjustbox}{totalheight=.95\textheight}"
+file write file10 _n "\begin{threeparttable}"
 file write file10 _n "\begin{tabular}{lc|c}"
 file write file10 _n "\toprule"
 file write file10 _n "\midrule"
-file write file10 _n "& \multicolumn{1}{c}{Cognitive Scores} & \multicolumn{1}{c}{Non-cognitive Scores}\\ \cline{2-7}"
+file write file10 _n "& \multicolumn{1}{c}{Cognitive Scores} & \multicolumn{1}{c}{Non-cognitive Scores}\\ "
 file write file10 _n "& Fixed Effect & Fixed Effect \\"
 file write file10 _n " $ d $ (meters)& (1) & (2) \\"
 file write file10 _n "\midrule"
+
 
 **Running main regressions	
 
@@ -2191,6 +2263,7 @@ file write file10 _n "\item Robust standard errors, clustered at the individual 
 file write file10 _n "\item *** p$<$0.01, ** p$<$0.05, * p$<$0.1"
 file write file10 _n "\end{tablenotes}"
 file write file10 _n "\end{threeparttable}"
+file write file10 _n "\end{adjustbox}"
 file write file10 _n "} \end{table}"
 
 file write file10 _n "\end{document}"
@@ -2203,7 +2276,7 @@ clear all
 
 cd "$repository/data_sets/generated"
 
-use newv_table34_unique_data_clean
+use table34_unique_data_clean
 
 *Dropping those kids for whom we lack addresses
 foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
@@ -2211,13 +2284,14 @@ foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 
 drop if child == `kid'
 }
 
+
+drop if test =="pre"
+
 ***********************************************************************************
 **If want to reproduce table restricting sample to control kids, add the code below
 
 
-
 keep if (C == 1 & first_random == 1) | (CC == 1 & first_random == 1) | (CT_pretreat == 1) | (CK_prekinder == 1)
-
 
 
 ***********************************************************************************
@@ -2237,13 +2311,13 @@ foreach ring in 0_10000 10000_20000 20000_30000 30000_40000 40000_50000 {
 gen percent_treated_`ring' = (treated_`ring' / (treated_`ring' + control_`ring'))*100
 }
 
-file open file11 using "$repository/analysis/tables/tables_no_pre_percentage_treated/newv_table14_summary_rings.tex", replace write
+file open file11 using "$repository/analysis/tables/tables_no_pre_percentage_treated/table14_summary_rings.tex", replace write
 
 
 file write file11 "\documentclass[11pt]{article}"
 file write file11 _n "\usepackage{booktabs, multicol, multirow}"
 file write file11 _n "\usepackage{caption}"
-file write file11 _n "\userpackage[flushleft]{threeparttable}"
+file write file11 _n "\usepackage[flushleft]{threeparttable}"
 file write file11 _n	"\begin{document}"
 
 file write file11 _n "\begin{table}[H]"
@@ -2251,7 +2325,7 @@ file write file11 _n "\centering"
 file write file11 _n "\caption{Descriptive Statistics for Rings}"
 file write file11 _n "\label{ring_stat}  \begin{threeparttable}"
 file write file11 _n "\begin{tabular}{lccc}"
-file write file11 _n "$ d_j $ & $ N^{treated}$  & $N^{control}$ & $ P^{treated}_{i,t,d_j}$\\" 
+file write file11 _n "$ d_j $ & $ N^{treated}$  & $N^{control}$ & $ N^{total}_{i,t,d_j}$\\" 
 file write file11 _n "\toprule"
 file write file11 _n "\midrule"
 
@@ -2316,12 +2390,7 @@ merge m:1 child using `file'
 drop _merge
 } 
 
-*Dropping those kids for whom we lack addresses
-foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
-
-drop if child == `kid'
-}
-
+	
 replace age_pre = . if age_pre == 0	
 
 **Creating factor variables
@@ -2348,7 +2417,7 @@ local num : list sizeof local(ring)
 local i = 1
 
 
-file open file12 using "$repository/analysis/tables/tables_no_pre_percentage_treated/newv_table15_fadeout.tex", replace write
+file open file12 using "$repository/analysis/tables/tables_no_pre_percentage_treated/table15_fadeout.tex", replace write
 
 
 
@@ -2357,11 +2426,14 @@ file open file12 using "$repository/analysis/tables/tables_no_pre_percentage_tre
 file write file12 _n "\documentclass[11pt]{article}"
 file write file12 _n "\usepackage{booktabs, multicol, multirow}"
 file write file12 _n "\usepackage{caption}"
-file write file12 _n "\userpackage[flushleft]{threeparttable}"
+file write file12 _n "\usepackage{adjustbox}"
+file write file12 _n "\usepackage[flushleft]{threeparttable}"
 file write file12 _n	"\begin{document}"
 
 
-file write file12 _n "\begin{table}[H]\centering \caption{Spatial Fade-out of Spillover Effects}  \scalebox{1}{ \label{tab:donuts}  \begin{threeparttable}"
+file write file12 _n "\begin{table}[H]\centering \caption{Spatial Fade-out of Spillover Effects}"
+file write file12 _n "\begin{adjustbox}{width = \textwidth}"
+file write file12 _n "\begin{threeparttable}"
 file write file12 _n "\begin{tabular}{lccc|ccc}"
 file write file12 _n "\toprule"
 file write file12 _n "\midrule"
@@ -2465,6 +2537,7 @@ file write file12 _n "\item Robust standard errors, clustered at the individual 
 file write file12 _n "\item *** p$<$0.01, ** p$<$0.05, * p$<$0.1"
 file write file12 _n "\end{tablenotes}"
 file write file12 _n "\end{threeparttable}"
+file write file12 _n "\end{adjustbox}"
 file write file12 _n "} \end{table}"
 
 
@@ -2472,13 +2545,14 @@ file write file12 _n "\end{document}"
 
 file close file12
 
+
 ***Create Table 16 : Kinder vs. Parent Treated********
 
 clear all
 
 cd "$repository/data_sets/generated"
 
-use newv_table34_unique_data_clean
+use table34_unique_data_clean
 
 *Dropping those kids for whom we lack addresses
 foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 4913 {
@@ -2486,9 +2560,11 @@ foreach kid in 1116 1130 2080 2526 2565 2687 3359 3527 3909 3917 3930 4079 4409 
 drop if child == `kid'
 }
 
+
+drop if test =="pre"
+
 ***********************************************************************************
 **If want to reproduce table restricting sample to control kids, add the code below
-
 
 
 keep if (C == 1 & first_random == 1) | (CC == 1 & first_random == 1) | (CT_pretreat == 1) | (CK_prekinder == 1)
@@ -2518,6 +2594,8 @@ merge m:1 child using `file'
 drop _merge
 } 
 
+
+	
 replace age_pre = . if age_pre == 0	
 
 **Creating factor variables
@@ -2544,20 +2622,23 @@ local num : list sizeof local(distance)
 local i = 1
 
 
-file open file13 using "$repository/analysis/tables/tables_no_pre_percentage_treated/newv_table16_mechanism.tex", replace write
+file open file13 using "$repository/analysis/tables/tables_no_pre_percentage_treated/table16_mechanism.tex", replace write
 
 
 file write file13 _n "\documentclass[11pt]{article}"
 file write file13 _n "\usepackage{booktabs, multicol, multirow}"
 file write file13 _n "\usepackage{caption}"
-file write file13 _n "\userpackage[flushleft]{threeparttable}"
+file write file13 _n "\usepackage{adjustbox}"
+file write file13 _n "\usepackage[flushleft]{threeparttable}"
 file write file13 _n	"\begin{document}"
 
-file write file13 _n "\begin{table}[H]\centering \caption{The Effect from Parent vs. Child Programs}  \scalebox{.99}{\label{tab:treatments}  \begin{threeparttable}"
+file write file13 _n "\begin{table}[H]\centering \caption{The Effect from Parent vs. Child Programs}"
+file write file13 _n "\begin{adjustbox}{totalheight = \textheight}"
+file write file13 _n "\begin{threeparttable}"
 file write file13 _n "\begin{tabular}{cc|c}"
 file write file13 _n "\toprule"
 file write file13 _n "\midrule"
-file write file13 _n "& \multicolumn{1}{c}{Cognitive Scores} & \multicolumn{1}{c}{Non-cognitive Scores}\\ \cline{2-7}"
+file write file13 _n "& \multicolumn{1}{c}{Cognitive Scores} & \multicolumn{1}{c}{Non-cognitive Scores}\\ "
 file write file13 _n "& Fixed Effect & Fixed Effect\\"
 file write file13 _n "Distance & (1) & (2) \\"
 file write file13 _n "\midrule"
@@ -2633,6 +2714,7 @@ file write file13 _n "\item Robust standard errors, clustered at the individual 
 file write file13 _n "\item *** p$<$0.01, ** p$<$0.05, * p$<$0.1"
 file write file13 _n "\end{tablenotes}"
 file write file13 _n "\end{threeparttable}"
+file write file13 _n "\end{adjustbox}"
 file write file13 _n "} \end{table}"
 
 file write file13 _n "\end{document}"
@@ -2751,7 +2833,7 @@ file open file14 using "$repository/analysis/tables/newv_table17_friend_network_
 file write file14 _n "\documentclass[11pt]{article}"
 file write file14 _n "\usepackage{booktabs, multicol, multirow}"
 file write file14 _n "\usepackage{caption}"
-file write file14 _n "\userpackage[flushleft]{threeparttable}"
+file write file14 _n "\usepackage[flushleft]{threeparttable}"
 file write file14 _n	"\begin{document}"
 
 file write file14 _n "\begin{table}[H]\centering \caption{Summary statistics of surveyed kids \label{sumstat_survey}}"
@@ -2931,7 +3013,7 @@ file open file15 using "$repository/analysis/tables/newv_table18_friend_network_
 file write file15 _n "\documentclass[11pt]{article}"
 file write file15 _n "\usepackage{booktabs, multicol, multirow}"
 file write file15 _n "\usepackage{caption}"
-file write file15 _n "\userpackage[flushleft]{threeparttable}"
+file write file15 _n "\usepackage[flushleft]{threeparttable}"
 file write file15 _n	"\begin{document}"
 
 
